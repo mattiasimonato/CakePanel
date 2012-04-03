@@ -1,0 +1,1 @@
+<?php class CakePanelAppModel extends AppModel {}

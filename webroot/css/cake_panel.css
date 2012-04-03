@@ -1,0 +1,7 @@
+/**
+ * CSS Fix
+ */
+
+.dataTables_wrapper {
+	min-height:1px;
+}
