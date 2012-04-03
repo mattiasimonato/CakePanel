@@ -24,7 +24,7 @@ class CakePanelController extends CakePowerController {
 	protected $__cakePanel = array(
 		'version' 			=> '1.0',
 		'components' 		=> array(),
-		'helpers' 			=> array( 'Session', 'Form' ),
+		'helpers' 			=> array( 'Html', 'Session', 'Form' ),
 	);
 
 	

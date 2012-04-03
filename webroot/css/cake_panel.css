@@ -5,3 +5,45 @@
 .dataTables_wrapper {
 	min-height:1px;
 }
+
+
+
+
+
+
+
+/**
+ * Form Error Handling
+ */
+
+form.form .field .error-message {
+	display:none;
+}
+
+form.form .field .form-error {
+	border-color: rgba(100,0,0,0.5);
+	box-shadow: 0 1px 2px rgba(255, 0, 0, 0.15) inset;
+}
+
+/**
+ * Tipsy error style
+ */
+
+.tipsy-error .tipsy-inner {
+	background-color: #900;
+}
+
+.tipsy-error .tipsy-arrow-s {
+	border-top-color:#900;
+}
+.tipsy-error .tipsy-arrow-n {
+	border-bottom-color:#900;
+}
+
+.tipsy-error .tipsy-arrow-w {
+	border-right-color:#900;
+}
+
+.tipsy-error .tipsy-arrow-e {
+	border-left-color:#900;
+}

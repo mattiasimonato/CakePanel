@@ -34,6 +34,9 @@ class PanelFormHelper extends FormHelper {
 		if ( !array_key_exists('between',$options) ) $options['between'] 	= '<div class="field">';
 		if ( !array_key_exists('after',$options) ) $options['after'] 		= '</div>';
 		
+		// tipsy default position.
+		if ( !array_key_exists('data-tipsy-gravity',$options) ) $options['data-tipsy-gravity'] = 'sw';
+		
 		return parent::input( $name, $options );
 	
 	}

@@ -47,7 +47,8 @@ $this->Html->css(array(
 
 // Default Javascript
 $this->Html->script(array(
-	'CakePanel.all'
+	'CakePanel.all',
+	'CakePanel.cake_panel'
 ),array(
 	'inline' => false
 ));
