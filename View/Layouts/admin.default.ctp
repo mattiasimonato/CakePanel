@@ -48,8 +48,6 @@
 				
 				<div class="container">
 					
-					<div class="grid-24">
-					
 					<?php
 					
 					#PowerMenu::debug('admin.sidebar');
@@ -92,7 +90,7 @@
 					
 					
 					?>
-					</div>
+					
 					
 				</div>
 				
@@ -100,15 +98,16 @@
 			
 			<?php
 			echo $this->element('CakePanel.admin.default.topnav');
-			echo $this->element('CakePanel.admin.default.quicknav');
+			#echo $this->element('CakePanel.admin.default.quicknav');
 			?>
 		
 		</div>
 		
-		
+		<!-- 
 		<div id="footer">
 			Copyright &copy; 2012, MadeByAmp Themes.
 		</div>
+		-->
 		
 	</body>
 </html>

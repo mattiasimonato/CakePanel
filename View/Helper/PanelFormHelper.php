@@ -8,9 +8,9 @@
 
 
 
-App::import( 'View/Helper', 'FormHelper' );
+App::import( 'View/Helper', 'CakePower.PowerFormHelper' );
 
-class PanelFormHelper extends FormHelper {
+class PanelFormHelper extends PowerFormHelper {
 	
 	
 	
@@ -22,6 +22,8 @@ class PanelFormHelper extends FormHelper {
  */
 	public function input( $name, $options = array() ) {
 		
+		if ( !is_array($options) ) $options = array( 'label'=>$options );
+		
 		if ( !isset($options['div']) || ( empty($options['div']) && $options['div'] !== false ) ) {
 			$options['div'] = 'field-group';
 			
@@ -30,9 +32,11 @@ class PanelFormHelper extends FormHelper {
 			
 		}
 		
-		
-		if ( !array_key_exists('between',$options) ) $options['between'] 	= '<div class="field">';
-		if ( !array_key_exists('after',$options) ) $options['after'] 		= '</div>';
+		// Wraps works only if a div is required!
+		if ( $options['div'] !== false ) {
+			if ( !array_key_exists('between',$options) ) $options['between'] 	= '<div class="field">';
+			if ( !array_key_exists('after',$options) ) $options['after'] 		= '</div>';
+		}
 		
 		// tipsy default position.
 		if ( !array_key_exists('data-tipsy-gravity',$options) ) $options['data-tipsy-gravity'] = 'sw';
@@ -124,6 +128,65 @@ class PanelFormHelper extends FormHelper {
 			'label' 	=> $legend,
 			'fields' 	=> ob_get_clean()
 		));
+		
+	}
+	
+	
+
+	
+	
+/**	
+ * create()
+ * Initialize a form tag with some defaults options.
+ */
+	public function create($model = null, $options = array()) {
+		
+		$options += array( 'class'=>'', 'ajax'=>false );
+		
+		// Default class for the panel form
+		$options['class'] = 'form uniformForm ' . $options['class'];
+		if ( isset($options['class-override']) ) $options['class'] = $options['class-override'];
+		unset($options['class-override']);
+		
+		// Automagically ajaxForm provided by Panel js object
+		if ( $options['ajax'] ) $options['data-ajax'] = true;
+		unset($options['ajax']);
+		
+		// Compose the Ajax Redirect hidden option
+		$_redirect = '';
+		if ( isset($options['_redirect']) ) {
+			$_redirect = $options['_redirect'];
+			unset($options['_redirect']);
+			
+			$_redirect = $this->Html->tag(
+				'div',
+				$this->input( '_redirect',array( 'name'=>'_redirect', 'type'=>'hidden', 'value'=>$_redirect, 'label'=>false, 'div'=>false ) ),
+				array( 'style'=>'display:none' )
+			);
+			
+		}
+		
+		return parent::create($model,$options) . $_redirect;
+		
+	}
+	
+
+	
+/**
+ * end()
+ * Setup some basic classes for the input.
+ */
+	public function end( $options = null ) {
+		
+		// Compose the basic label for the submit button
+		if ( !is_array($options) ) $options['label'] = $options;
+		if ( !isset($options['label']) ) $options['label'] = __('Save');
+		
+		// Sets up the basic css class for the panel's grid system
+		if ( empty($options['div']) ) $options['div'] = array();
+		if ( !isset($options['div']['class']) ) $options['div']['class'] = 'grid-24 form-actions';
+		
+		return parent::end($options);
 		
 	}
 

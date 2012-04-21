@@ -22,9 +22,10 @@
  		</li>
 	 	<li><?php
 	 	echo $this->Html->link( 'logout', array(
-			'controller' => 'users',
-			'action' => 'logout',
-			'admin' => false
+	 		'plugin'		=> 'cake_auth',
+			'controller' 	=> 'cake_auth_users',
+			'action' 		=> 'logout',
+			'admin' 		=> false
 		));
 	 	?></li>
 	 </ul>

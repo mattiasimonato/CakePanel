@@ -7,7 +7,7 @@
 
 class CakePanelController extends CakePowerController {
 	
-	public $layout 			= 'CakePanel.admin.default';
+	//public $layout 			= 'CakePanel.admin.default';
 	
 	// Customization for automagically sets the login layout: 
 	public $loginLayout 	= 'CakePanel.login.default';
@@ -44,11 +44,19 @@ class CakePanelController extends CakePowerController {
 		// Loads extended core classes setting an alias to use them with the normal app names.
 		foreach( array('components','helpers') as $type ) {
 			
-			foreach ( $this->__cakePanel[$type] as $cmp ) {
-				
-				if ( empty($this->{$type}[$cmp]) ) $this->{$type}[$cmp] = array();
-				if ( empty($this->{$type}[$cmp]['className']) ) $this->{$type}[$cmp]['className'] = 'CakePanel.Panel'.$cmp;
-				
+			foreach ( $this->__cakePanel[$type] as $key=>$val ) {
+			
+				if ( is_numeric($key) ) {
+					$cmp 	= $val;
+					$load 	= true;
+				} else {
+					$tmp 	= $key;
+					$load 	= $val;
+				}
+			
+				if ( empty($this->{$type}[$cmp]) && $load === true ) $this->{$type}[$cmp] = array();
+				if ( isset($this->{$type}[$cmp]) && empty($this->{$type}[$cmp]['className']) ) $this->{$type}[$cmp]['className'] = 'CakePanel.Panel'.$cmp;
+			
 			}
 			
 		}

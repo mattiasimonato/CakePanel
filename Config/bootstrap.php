@@ -30,11 +30,12 @@ App::uses( 'CakePanelController', 'CakePanel.Controller' );
 
 
 
+
 /**
  * Build Sidebar Menu
  * NOTICE: this code need to be shifted in a view's related code.
  */
-
+/*
 PowerMenu::appendTo('admin.sidebar', 'users', array(
 	'show' 	=> 'Users',
 	'url'	=> array( 'controller'=>'users' ),
@@ -67,3 +68,4 @@ PowerMenu::appendTo('admin.sidebar', 'posts', array(
 		),
 	)
 ));
+*/

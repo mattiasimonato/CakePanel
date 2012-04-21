@@ -13,6 +13,10 @@
 		<?php
 		foreach ( PowerMenu::getTree('admin.sidebar') as $item ) {
 			
+			
+			// Check menu permissions
+			if ( $this->Html->allowUrl($item[PowerMenu::$displayModel]['url']) !== true ) continue;
+			
 			$li = '';
 			
 			// Main Item Icon
@@ -40,6 +44,9 @@
 				ob_start();
 				foreach ( $item[PowerMenu::$children] as $child ) {
 					
+					// Check link permissions
+					if ( $this->Html->allowUrl($child[PowerMenu::$displayModel]['url']) !== true ) continue;
+					
 					echo $this->Html->tag( 'li', array(
 						$this->Html->link( $child[PowerMenu::$displayModel]['show'], $child[PowerMenu::$displayModel]['url'] )
 					));
@@ -51,6 +58,9 @@
 				));
 				
 			}
+			
+			// Menu block extension
+			$li.= $this->fetch('admin.sidebar.'.$item[PowerMenu::$displayModel]['_name']);
 			
 			// Output the Item.
 			echo $this->Html->tag('li',$li,$li_opt);

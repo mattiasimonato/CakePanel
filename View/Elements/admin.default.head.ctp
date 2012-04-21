@@ -33,11 +33,21 @@ $this->end();
 
 // Default CSS
 $this->Html->css(array(
-	'http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600',
+	//'http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600',
 	'CakePanel.all',
-	'CakePanel.cake_panel',
 	'CakePanel.ie9' 		=> 'gte IE 9',
 	'CakePanel.ie8' 		=> 'gte IE 8',
+	
+	// Addons plugins
+	'CakePanel.addons/jquery.noty',
+	'CakePanel.addons/noty_theme_default',
+	'CakePanel.addons/noty_theme_facebook',
+	'CakePanel.addons/noty_theme_twitter',
+	'CakePanel.addons/noty_theme_mitgux',
+	
+	// CakePanel Customization
+	'CakePanel.cake_panel',
+	
 ),null,array(
 	'inline' 	=> false,
 	'debug' 	=> true
@@ -48,10 +58,34 @@ $this->Html->css(array(
 // Default Javascript
 $this->Html->script(array(
 	'CakePanel.all',
-	'CakePanel.cake_panel'
+	'CakePanel.jquery.scrollsticky',
+	
+	// Addons plugins
+	'CakePanel.addons/jquery.form',
+	'CakePanel.addons/jquery.noty',
+	
+	// CakePanel Customization
+	'CakePanel.cake_panel',
 ),array(
 	'inline' => false
 ));
+
+
+
+
+
+
+
+
+
+/**
+ * Extension Ready
+ * -----------------------------
+ * 
+ * here external code can integrate to the layout and inject some assets or
+ * use some view's block to add meta informations
+ */
+$this->getEventManager()->dispatch($e = new CakeEvent('CakePanel.View.Element.admin.default.head.before',$this));
 
 
 
@@ -112,6 +146,9 @@ if ( !empty($tmp) ) $this->assign( 'inlineCSS', $this->Html->tag( 'style', $tmp,
 
 
 
+
+
+
 /**
  * Outputting headers blocks
  * "head" block can completely overwrite 
@@ -126,7 +163,7 @@ echo $this->fetch('css');
 echo $this->fetch('afterCss');
 echo $this->fetch('inlineCSS');
 
-
+echo '<!--[if gte IE 9]><style type="text/css">.gradient {filter: none;}</style><![endif]-->';
 
 
 
@@ -134,3 +171,11 @@ echo $this->fetch('beforeScript');
 echo $this->fetch('script');
 echo $this->fetch('afterScript');
 echo $this->fetch('inlineScript');
+
+
+
+/**
+ * Extension Ready
+ * -----------------------------
+ */
+$this->getEventManager()->dispatch($e = new CakeEvent('CakePanel.View.Element.admin.default.head.after',$this));
