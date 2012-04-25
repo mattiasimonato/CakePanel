@@ -128,3 +128,21 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	text-shadow: 0 1px 0 #000;
 }
 
+
+
+
+
+
+/**
+ * JumpMenu
+ */
+
+ .jump-menu {
+ 	
+	position:absolute;
+	bottom:0;
+	right:10px;
+	
+ }
+ 
+ .jump-menu input[type=submit] { display:none }

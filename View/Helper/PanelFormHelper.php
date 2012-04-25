@@ -179,12 +179,16 @@ class PanelFormHelper extends PowerFormHelper {
 	public function end( $options = null ) {
 		
 		// Compose the basic label for the submit button
-		if ( !is_array($options) ) $options['label'] = $options;
+		if ( !is_array($options) ) $options = array( 'label'=>$options );
 		if ( !isset($options['label']) ) $options['label'] = __('Save');
 		
+		$options += array( 'div'=>null );
+		
 		// Sets up the basic css class for the panel's grid system
-		if ( empty($options['div']) ) $options['div'] = array();
-		if ( !isset($options['div']['class']) ) $options['div']['class'] = 'grid-24 form-actions';
+		if ( $options['div'] !== false ) {
+			if ( empty($options['div']) ) $options['div'] = array();
+			if ( !isset($options['div']['class']) ) $options['div']['class'] = 'grid-24 form-actions';
+		}
 		
 		return parent::end($options);
 		

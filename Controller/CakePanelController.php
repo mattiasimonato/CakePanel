@@ -67,6 +67,18 @@ class CakePanelController extends CakePowerController {
 	
 	
 	
+	public function beforeFilter() {
+	
+		// Handle JumpMenu
+		if ( !empty($this->request->data['JumpMenu']['JumpTo']) ) {
+			$this->redirect(array( $this->request->data['JumpMenu']['JumpTo'] ));
+		}
+		
+		parent::beforeFilter();
+	
+	}
+	
+	
 	
 	public function beforeRender() {
 		

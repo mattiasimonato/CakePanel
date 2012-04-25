@@ -141,7 +141,7 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 	public function tabsWidget( $title = '', $content = array(), $options = array() ) {
 		
 		// Options default values.
-		$options += array( 'class'=>'', 'active_tab'=>'', 'tabOptions'=>array() );
+		$options += array( 'class'=>'', 'active_tab'=>'first', 'tabOptions'=>array() );
 		
 		// Optional overrides.
 		$options['class'].= ' widget-tabs';

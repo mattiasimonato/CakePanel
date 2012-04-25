@@ -262,7 +262,7 @@ t:'e'};
 		/**
 		 * Sticky Toolbar
 		 */
-		/*
+		
 		$contentHeader.scrollSticky({
 			onSticky: function() {
 				$contentHeader.css({
@@ -271,7 +271,7 @@ t:'e'};
 				});
 			}
 		});
-		*/
+		
 		
 		
 		
@@ -396,6 +396,26 @@ t:'e'};
 		$('form.ajaxForm, form[data-ajax]').each(function(){
 			
 			Panel.ajaxForm.call( $(this) );
+			
+		});
+		
+		
+		
+		
+		
+		
+		/**
+		 * JumpMenu
+		 */
+		$('form.jump-menu').each(function(){
+			
+			var $this = $(this);
+			
+			$this.find('input[type=submit]').hide();
+			
+			$this.find('select').bind('change',function(){
+				$this.submit();
+			});
 			
 		});
 		
