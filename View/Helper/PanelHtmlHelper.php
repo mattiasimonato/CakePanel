@@ -12,6 +12,20 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 	
 	
 	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 /**	
  * It build a Canvas theme widget box.
  * 

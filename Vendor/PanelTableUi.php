@@ -16,6 +16,9 @@
  * @author peg
  *
  */
+
+
+
 class PanelTableUI extends PanelHtmlHelper {
 	
 	public $modelName = '';
@@ -387,6 +390,30 @@ class PanelTableUI extends PanelHtmlHelper {
 			'th_odd'	=> array_merge( $th, $th_odd ),
 			'th_even'	=> array_merge( $th, $th_even ),
 		);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+/**	
+ * Standard Actions List
+ * this method offer an "edit" and "delete" actions for the row.
+ * 
+ * you can override this method to customize row actions.
+ */
+	protected function fldActions($data) {
+		
+		return $this->tag('div',array(
+			$this->editAction(array( 'action'=>'edit', $data[$this->modelName]['id'] )),
+			' | ',
+			$this->deleteAction(array( 'action'=>'delete', $data[$this->modelName]['id'] ))
+		));
 		
 	}
 	

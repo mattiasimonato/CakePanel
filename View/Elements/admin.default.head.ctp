@@ -66,6 +66,11 @@ $this->Html->script(array(
 	
 	// CakePanel Customization
 	'CakePanel.cake_panel',
+	'CakePanel.cake_panel/panel.redirect',
+	'CakePanel.cake_panel/panel.notifications',
+	'CakePanel.cake_panel/panel.actions',
+	'CakePanel.cake_panel/panel.form',
+	'CakePanel.cake_panel/panel.init',
 ),array(
 	'inline' => false
 ));

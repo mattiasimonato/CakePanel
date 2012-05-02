@@ -5314,11 +5314,13 @@ $.alert = function (config) {
 		, confirmText: 'Confirm'
 		, cancelText: 'Cancel'
 		, callback: function () {}
+		, cancelCallback: function() {}
 		, overlayClose: false
 		, escClose: true
 	};
 	
 	options = $.extend (defaults, config);
+	
 	
 	container = $('<div>', { id: 'alert' });
 	content = $('<div>', { id: 'alertContent' });
@@ -5362,16 +5364,33 @@ $.alert = function (config) {
 	
 	cancel.bind ('click', function (e) { 
 		e.preventDefault (); 
+		
+		if (typeof options.cancelCallback === 'function') {
+			options.cancelCallback.apply ();
+		}
+		
 		$.alert.close (); 		
 	});
 	
 	close.bind ('click', function (e) {
 		e.preventDefault ();
+		
+		if (typeof options.cancelCallback === 'function') {
+			options.cancelCallback.apply ();
+		}
+		
 		$.alert.close ();
 	});
 	
 	if (options.overlayClose) {
-		overlay.bind ('click', function (e) { $.alert.close (); });
+		overlay.bind ('click', function (e) { 
+			
+			if (typeof options.cancelCallback === 'function') {
+				options.cancelCallback.apply ();
+			}
+			
+			$.alert.close (); 
+		});
 	}
 	
 	if (options.escClose) {
@@ -5379,6 +5398,12 @@ $.alert = function (config) {
 			var key = e.which || e.keyCode;
 			
 			if (key == 27) {
+			
+			
+				if (typeof options.cancelCallback === 'function') {
+					options.cancelCallback.apply ();
+				}
+			
 				$.alert.close ();
 			}			
 		});
@@ -5386,6 +5411,7 @@ $.alert = function (config) {
 	
 	
 }
+
 
 $.alert.close = function () {
 	$('#alert').remove ();
