@@ -58,9 +58,9 @@ $this->Html->css(array(
 // Default Javascript
 $this->Html->script(array(
 	'CakePanel.all',
-	'CakePanel.jquery.scrollsticky',
 	
 	// Addons plugins
+	'CakePanel.addons/jquery.scrollsticky',
 	'CakePanel.addons/jquery.form',
 	'CakePanel.addons/jquery.noty',
 	

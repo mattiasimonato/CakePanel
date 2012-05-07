@@ -88,6 +88,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 
 
+/**
+ * Sticky Sidebar Widget
+ */
+@media all and (min-width: 1280px) {
+	.sideSticky.stiky-active {
+		position:fixed;
+		top:110px;
+	}
+}
+
+
+
+
 
 /**
  * Redirect Dialog
@@ -137,12 +150,52 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
  * JumpMenu
  */
 
- .jump-menu {
- 	
+.jump-menu {
+		
 	position:absolute;
 	bottom:0;
 	right:10px;
+
+}
+
+.jump-menu input[type=submit] { display:none }
+
+
+
+
+/**
+ * SubMenu
+ */
+
+.sub-menu {
+	position:absolute;
+	bottom:5px;
+	left:16px;
 	
- }
- 
- .jump-menu input[type=submit] { display:none }
+	display:block;
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+.sub-menu li {
+	display:inline-block;
+	padding: 0 5px;
+	border-right: 1px solid #ddd;
+	border-left:1px solid #fff;
+	line-height: 1em;
+}
+.sub-menu li:first-child {
+	border-left:0;
+	padding-left:0;
+}
+.sub-menu li:last-child {
+	border-right:0;
+	padding-right:0;
+}
+
+.sub-menu li a {
+	text-shadow: 0 1px 0 #fff;
+	color:#333;
+}
+

@@ -45,7 +45,10 @@
 				<div id="contentHeader">
 					<h1><?php echo ( $title_for_view = $this->fetch('title_for_view') ) ? $title_for_view : $title_for_layout ; ?></h1>
 					
-					<?php echo $this->fetch('JumpMenu'); ?>
+					<?php
+					echo $this->fetch('JumpMenu'); 
+					echo $this->fetch('SubMenu');
+					?>
 					
 				</div>
 				

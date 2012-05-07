@@ -48,12 +48,17 @@ class PanelFormHelper extends PowerFormHelper {
 	
 /**	
  * Multiple input notation accordling to the Canvas HTML!!!
+ * 
+ * $block_options may contain some HTML attributes to enrich the block container.
+ * $block_options['label'] may contain some HTML attributes to enrich the label tag as block title!
  */
-	public function inputs( $fields = array() ) {
+	public function inputs( $fields = array(), $blacklist = array(), $block_options = array() ) {
 		
 		$model = $this->model();
 		
 		if ( is_array($fields) ) {
+			
+			$fields+= array( 'legend'=>false, 'fieldset'=>false );
 			
 			if ( array_key_exists('legend',$fields) ) {
 				$legend = $fields['legend'];
@@ -123,11 +128,27 @@ class PanelFormHelper extends PowerFormHelper {
 			));
 		}
 		
+		
+		
+		
 		// Create the multiple fields markup.
-		return String::insert('<div class="field-group"><label>:label</label>:fields</div>',array(
-			'label' 	=> $legend,
-			'fields' 	=> ob_get_clean()
-		));
+		
+		$block_options+= array( 'label'=>array(), 'class'=>'field-group' );
+		
+		// Build the block legend
+		if ( $legend ) $legend = $this->Html->tag( 'label', $legend, $block_options['label'] );
+		unset($block_options['label']);
+		
+		// Append classes to the container.
+		if ( isset($block_options['add_class']) ) {
+			$block_options['class'].= ' ' . $block_options['add_class'];
+			unset($block_options['add_class']);	
+		}
+		
+		return $this->Html->tag('div',array(
+			$legend,
+			ob_get_clean()
+		),$block_options);
 		
 	}
 	

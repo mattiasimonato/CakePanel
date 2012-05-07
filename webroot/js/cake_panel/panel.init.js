@@ -13,6 +13,7 @@
 		var $formActions 	= null;
 		var $contentHeader 	= $('#contentHeader');
 		var $content		= $('#content');
+		var $mainMenu		= $('#sidebar');
 		
 		
 		
@@ -37,12 +38,23 @@
 		
 		$contentHeader.scrollSticky({
 			onSticky: function() {
+				
 				$contentHeader.css({
 					marginTop: '-5px',
 					width: $('#content').outerWidth()
 				});
+				
+				
+				$('.sideSticky').addClass('stiky-active');
+				
+			},
+			onUnsticky: function() {
+				$('.sideSticky').removeClass('stiky-active');
 			}
 		});
+		
+		// Sticky on main menu.
+		$mainMenu.scrollSticky({ usePlaceholder:false });
 		
 		
 		
@@ -50,9 +62,24 @@
 		/**
 		 * Form Stiky Actions Bar
 		 */
+		
+		var $formActions = false;
+		
 		if ( $('.container form').length == 1 ) {
 			
-			var $formActions = $('.container form .form-actions');
+			$formActions = $('.container form .form-actions');
+			
+		} else if ( $('.container form.main').length ) {
+			
+			$formActions = $('.container form.main-form .form-actions');
+			
+		} else {
+			
+			$formActions = $('.container form:first .form-actions');
+			
+		}
+		
+		if ( $formActions ) {
 			
 			$formActions.html('<div class="wrap">'+$formActions.html()+'</div>').addClass('sticky-form-actions').css({
 				top: 	$(window).height() - $formActions.outerHeight(),
@@ -60,6 +87,18 @@
 				width:	$content.outerWidth()
 			});
 			
+			$(window).keypress(function(e) {
+				
+				if ( (e.ctrlKey || e.metaKey) && ( e.which == 115 ) ) {
+					
+					$formActions.trigger('submit');
+					
+					e.preventDefault();
+					
+				}
+				
+			});
+		
 		}
 		
 		
@@ -167,4 +206,3 @@
 
 
 };
-
