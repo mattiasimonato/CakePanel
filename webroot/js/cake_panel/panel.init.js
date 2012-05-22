@@ -30,8 +30,6 @@
 		
 		
 		
-		
-		
 		/**
 		 * Sticky Toolbar
 		 */

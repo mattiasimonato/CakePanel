@@ -61,8 +61,10 @@ $this->Html->script(array(
 	
 	// Addons plugins
 	'CakePanel.addons/jquery.scrollsticky',
+	'CakePanel.addons/jquery.easing',
 	'CakePanel.addons/jquery.form',
 	'CakePanel.addons/jquery.noty',
+	'CakePanel.addons/jquery.scrollto',
 	
 	// CakePanel Customization
 	'CakePanel.cake_panel',
