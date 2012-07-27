@@ -74,12 +74,12 @@
 	 */
 	Panel.notify = function( data ) {
 		
-		switch ( data.status ) {
+		switch ( data._response.status ) {
 			
-			case 'ok': 		Panel.ok(data.message); 	break;
-			case 'ko': 		Panel.ko(data.message); 	break;
-			case 'alert': 	Panel.alert(data.message); 	break;
-			default:		Panel.msg(data.message); 	break;
+			case 'ok': 		Panel.ok(data._response.message); 		break;
+			case 'ko': 		Panel.ko(data._response.message); 		break;
+			case 'alert': 	Panel.alert(data._response.message); 	break;
+			default:		Panel.msg(data._response.message); 		break;
 			
 		}
 		

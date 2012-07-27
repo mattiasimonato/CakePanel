@@ -71,17 +71,16 @@
 					 * If you use CakePanel in combination of CakePower you can alias your Session component with "PowerSession" one
 					 * so it became easy to use custom methods:
 					 *
-					 * Session::msg()
-					 * Session::ok()
-					 * Session::ko()
+					 * Session::message()
+					 * Session::confirm()
+					 * Session::error()
 					 * Session::alert()
 					 */
-					$tmp = $this->Session->flash('flash');
-					$tmp.= $this->Session->flash('alert');
-					$tmp.= $this->Session->flash('auth');
-					$tmp.= $this->Session->flash('ok');
-					$tmp.= $this->Session->flash('ko');					
-					if ( $tmp ) echo $this->Html->tag( 'div', $tmp, array( 'style'=>'margin:15px;') );
+					echo $this->Html->tag(array(
+						'name'		=> 'div',
+						'content'	=> $this->Session->flash(),
+						'style'		=> 'margin:15px'
+					));
 					
 					
 					

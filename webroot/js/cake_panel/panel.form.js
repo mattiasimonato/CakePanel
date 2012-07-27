@@ -114,12 +114,12 @@
 				if ( !data ) return cfg.onError.call();
 				
 				// Handle redirect request
-				if ( data.redirect ) return Panel.redirect({ url:data.redirect, msg:data.message, type:data.status });
+				if ( data._response.redirect.length ) return Panel.redirect({ url:data._response.redirect, msg:data._response.message, type:data._response.status });
 				
-				if ( data.status == 'ko' ) {
+				if ( data._response.status == 'ko' ) {
 					
-					if ( data.validationErrors ) {
-						if ( cfg.onValidationError.call( data, data.validationErrors) === false ) return;
+					if ( data._response.validationErrors ) {
+						if ( cfg.onValidationError.call( data, data._response.validationErrors) === false ) return;
 						
 					} else {
 						return cfg.onError.call();
