@@ -5,8 +5,8 @@ App::import( 'View/Helper', 'CakePower.PowerHtmlHelper' );
 class PanelHtmlHelper extends PowerHtmlHelper {
 	
 	public static $widgetTpl 		= '<div id="{id}" class="widget {class}">{content}</div>';
-	public static $widgetHeaderTpl 	= '<div class="widget-header {class}" style="{style}">{content}</div>';
-	public static $widgetBodyTpl 	= '<div class="widget-content {class}" style="{style}">{content}</div>';
+	public static $widgetHeaderTpl 	= '<div id="{id}-header" data-toggle="collapse" data-target="#{id}-content" class="widget-header {class}" style="{style}">{content}</div>';
+	public static $widgetBodyTpl 	= '<div id="{id}-content" class="widget-content {class}" style="{style}">{content}</div>';
 	
 	
 	
@@ -49,8 +49,6 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 	public function widget( $title = '', $content = '', $options = array() ) {
 		
 		
-		
-		
 		// Respond to a single param associative array input
 		if ( is_array($title) ) {
 			
@@ -63,7 +61,7 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 			
 		}
 		
-		$defaults = array( 'titleTag'=>'h3', 'id'=>'', 'class'=>'', 'headerClass'=>'', 'headerStyle'=>'', 'bodyClass'=>'', 'bodyStyle'=>'' );
+		$defaults = array( 'titleTag'=>'h3', 'id'=>uniqid('CakePanel-widget-'), 'class'=>'', 'headerClass'=>'', 'headerStyle'=>'', 'bodyClass'=>'in', 'bodyStyle'=>'' );
 		if ( !is_array($options) ) $options = array( 'class'=>$options );
 		$options += $defaults;
 		
@@ -100,7 +98,8 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 		$header = PowerString::tpl( $options['headerTpl'], array(
 			'content' 	=> $title,
 			'class'		=> $options['headerClass'],
-			'style'		=> $options['headerStyle']
+			'style'		=> $options['headerStyle'],
+			'id'		=> $options['id']
 		),array(
 			' style=""',
 			'-header "' => '-header"'		
@@ -115,7 +114,8 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 		$body = PowerString::tpl( $options['bodyTpl'], array(
 			'content' 	=> $contentStaticPlaceholder,
 			'class'		=> $options['bodyClass'],
-			'style'		=> $options['bodyStyle']
+			'style'		=> $options['bodyStyle'],
+			'id'		=> $options['id']
 		),array(
 			' style=""',
 			'-content "' => '-content"'	
@@ -213,59 +213,6 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 		return $this->widget( $head, $body, $options );
 		
 	} 
-	
-	
-	
-	
-	
-	
-	/**
-	 * 24 cols grid system support.
-	 */
-	public function grid( $cols = 24, $content = '', $options = array() ) {
-		
-		$options += array( 'class'=>'' );
-		$options['class'] = 'grid-' . $cols . ' ' . $options['class'];
-		
-		// Supporto for lists of contents
-		if ( is_array($content) ) {
-			
-			$tmp = '';
-			
-			foreach ( $content as $line ) $tmp.= $line;
-			
-			$content = $tmp;
-			
-		}
-		
-		return $this->tag( 'div', $content, $options );
-	
-	}
-	
-	public function grid24( $content = '', $options = array() ) { return $this->grid( '24', $content, $options ); }
-	public function grid23( $content = '', $options = array() ) { return $this->grid( '23', $content, $options ); }
-	public function grid22( $content = '', $options = array() ) { return $this->grid( '22', $content, $options ); }
-	public function grid21( $content = '', $options = array() ) { return $this->grid( '21', $content, $options ); }
-	public function grid20( $content = '', $options = array() ) { return $this->grid( '20', $content, $options ); }
-	public function grid19( $content = '', $options = array() ) { return $this->grid( '19', $content, $options ); }
-	public function grid18( $content = '', $options = array() ) { return $this->grid( '18', $content, $options ); }
-	public function grid17( $content = '', $options = array() ) { return $this->grid( '17', $content, $options ); }
-	public function grid16( $content = '', $options = array() ) { return $this->grid( '16', $content, $options ); }
-	public function grid15( $content = '', $options = array() ) { return $this->grid( '15', $content, $options ); }
-	public function grid14( $content = '', $options = array() ) { return $this->grid( '14', $content, $options ); }
-	public function grid13( $content = '', $options = array() ) { return $this->grid( '13', $content, $options ); }
-	public function grid12( $content = '', $options = array() ) { return $this->grid( '12', $content, $options ); }
-	public function grid11( $content = '', $options = array() ) { return $this->grid( '11', $content, $options ); }
-	public function grid10( $content = '', $options = array() ) { return $this->grid( '10', $content, $options ); }
-	public function grid09( $content = '', $options = array() ) { return $this->grid( '09', $content, $options ); }
-	public function grid08( $content = '', $options = array() ) { return $this->grid( '08', $content, $options ); }
-	public function grid07( $content = '', $options = array() ) { return $this->grid( '07', $content, $options ); }
-	public function grid06( $content = '', $options = array() ) { return $this->grid( '06', $content, $options ); }
-	public function grid05( $content = '', $options = array() ) { return $this->grid( '05', $content, $options ); }
-	public function grid04( $content = '', $options = array() ) { return $this->grid( '04', $content, $options ); }
-	public function grid03( $content = '', $options = array() ) { return $this->grid( '03', $content, $options ); }
-	public function grid02( $content = '', $options = array() ) { return $this->grid( '02', $content, $options ); }
-	public function grid01( $content = '', $options = array() ) { return $this->grid( '01', $content, $options ); } 
 	
 	
 }

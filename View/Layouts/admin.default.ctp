@@ -32,32 +32,24 @@
 	
 	<body>
 		
-		<div id="wrapper">
+		<?php echo $this->element( 'CakePanel.admin.default.header' ) ?>
+		
+		<div class="container-fluid">
 			
-			<?php
-			echo $this->element('CakePanel.admin.default.header');
-			echo $this->element('CakePanel.admin.default.search');
-			echo $this->element('CakePanel.admin.default.sidebar');
-			?>
+			<div class="row-fluid">
 			
-			<div id="content">
-				
-				<div id="contentHeader">
-					<h1><?php echo ( $title_for_view = $this->fetch('title_for_view') ) ? $title_for_view : $title_for_layout ; ?></h1>
+				<div class="span3">
 					
-					<?php
-					echo $this->fetch('JumpMenu'); 
-					echo $this->fetch('SubMenu');
-					?>
+					<div id="sidebar" class="span3 affix">
+						<?php echo $this->element('CakePanel.admin.default.sidebar'); ?>
+					</div>
+					
 					
 				</div>
 				
-				<div class="container">
+				<div class="span9">
 					
 					<?php
-					
-					#PowerMenu::debug('admin.sidebar');
-					
 					
 					/**
 					 * Flash Messages
@@ -79,13 +71,22 @@
 					echo $this->Html->tag(array(
 						'name'		=> 'div',
 						'content'	=> $this->Session->flash(),
-						'style'		=> 'margin:15px'
+						'style'		=> 'margin-top:22px'
 					));
 					
 					
 					
 					
-					
+					/**
+					 * View Title
+					 */
+					echo $this->Html->tag(array(
+						'class'		=> 'page-header',
+						'content'	=> array(
+							'name' 		=> 'h4',
+							'content'	=> $this->fetch( 'title_for_view' )
+						)
+					));
 					
 					
 					/**
@@ -95,24 +96,13 @@
 					
 					
 					?>
-					
-					
 				</div>
 				
 			</div>
 			
-			<?php
-			echo $this->element('CakePanel.admin.default.topnav');
-			#echo $this->element('CakePanel.admin.default.quicknav');
-			?>
-		
 		</div>
 		
-		<!-- 
-		<div id="footer">
-			Copyright &copy; 2012, MadeByAmp Themes.
-		</div>
-		-->
+		
 		
 	</body>
 </html>

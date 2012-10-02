@@ -10,9 +10,9 @@ if ( empty($selected) )	$selected 	= null;
 
 $this->start('JumpMenu');
 
-echo $this->Form->create( 'JumpMenu',array(
+echo $this->Form->create( 'JumpMenu', array(
 	'url'		=> $url,
-	'class'		=> 'jump-menu'
+	'class'		=> 'navbar-form pull-right jump-menu'
 ));
 
 echo $this->Form->input( 'JumpTo', array(
@@ -23,9 +23,15 @@ echo $this->Form->input( 'JumpTo', array(
 	'div'		=> false,
 ));
 
-echo $this->Form->end(array(
-	'label' 	=> 'Go',
-	'div'		=> false
+echo ' ';
+
+echo $this->Html->tag(array(
+	'name' => 'button',
+	'content' => 'Go!',
+	'type' => 'submit',
+	'class' => 'btn btn-primary'
 ));
+
+echo $this->Form->end();
 
 $this->end('JumpMenu');

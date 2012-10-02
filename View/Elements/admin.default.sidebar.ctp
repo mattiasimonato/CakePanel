@@ -6,85 +6,158 @@
  * It build a custom HTML structure based on "admin.sidebar" PoweMenu data tree.
  * It goes deep to 2 levels.
  */
-?>
-<div id="sidebar">	
+
+
+foreach ( PowerMenu::getTree('admin.sidebar') as $item ) {
+	
+	
+	/**
+	 * Check menu permissions
+	 */
+	
+	if ( $this->Html->allowUrl($item[PowerMenu::$displayModel]['url']) !== true ) continue;
+	
+	
+	
+	
+	/**
+	 * Startup the block's cache var
+	 */
+	$block 			= '';
+	$blockDomId 	= str_replace( array('.','_'), array('_','-'), 'admin.sidebar.' . $item[PowerMenu::$displayModel]['_name'] );
+	$blockIsActive	= ( $item[PowerMenu::$displayModel]['active'] == 'active' ) ? true : false ;
+	
+	
+	/**
+	 * Menu Block Title
+	 */
+	$title = '';
+	
+	// Main Item Icon
+	if ( !empty($item[PowerMenu::$displayModel]['icon']) ) {
+		$title.= String::insert('<i class="icon-:icon"></i>',array(
+			'icon' => $item[PowerMenu::$displayModel]['icon']
+		));
+	}
+	
+	$title.= $item[PowerMenu::$displayModel]['show']; 
+	
+	$block.= $this->Html->tag(array(
+		'name' 			=> 'h5',
+		'content' 		=> $title,
+		'data-toggle' 	=> 'collapse',
+		'data-target' 	=> '#'.$blockDomId
+	));
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Block Properties
+	 */
+	
+	// Main Item Options Array
+	$block_opt = array(
+		'class' => 'nav'
+	);
+	
+	// Set active item.
+	if ( $item[PowerMenu::$displayModel]['active'] ) $block_opt['class'].= ' active';
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Block Extension - View Block
+	 * admin.sidebar.{blockName}.before
+	 */
+	
+	$block.= $this->fetch('admin.sidebar.'.$item[PowerMenu::$displayModel]['_name'].'.before');
+	
+	
+	
+	
+	/**
+	 * Block Actions
+	 * generates the nav menu for this block
+	 */
+	if ( !empty($item[PowerMenu::$children]) ) {
 		
-	<ul id="mainNav">
-		<?php
-		foreach ( PowerMenu::getTree('admin.sidebar') as $item ) {
+		ob_start();
+		foreach ( $item[PowerMenu::$children] as $child ) {
 			
-			
-			// Check menu permissions
-			if ( $this->Html->allowUrl($item[PowerMenu::$displayModel]['url']) !== true ) continue;
-			
-			$li = '';
-			
-			// Main Item Icon
-			if ( !empty($item[PowerMenu::$displayModel]['icon']) ) {
-				$li.= String::insert('<span class="icon-:icon"></span>',array(
-					'icon' => $item[PowerMenu::$displayModel]['icon']
-				));
+			// Investigate to determine if item is related to the actual action
+			$itemIsActive = false;
+			if ( $child[PowerMenu::$displayModel]['active'] == 'active' ) {
+				$itemIsActive 	= true;
+				$blockIsActive 	= true;
 			}
 			
-			// Main Item Link
-			$li.= $this->Html->link( $item[PowerMenu::$displayModel]['show'], $item[PowerMenu::$displayModel]['url'] );
+			// Check link permissions
+			if ( $this->Html->allowUrl($child[PowerMenu::$displayModel]['url']) !== true ) continue;
 			
-			// Main Item Options Array
-			$li_opt = array(
-				'class' => 'nav'
-			);
-			
-			// Set active item.
-			if ( $item[PowerMenu::$displayModel]['active'] ) $li_opt['class'].= ' active';
-			
-			
-			// Sub Menu
-			if ( !empty($item[PowerMenu::$children]) ) {
-				
-				ob_start();
-				foreach ( $item[PowerMenu::$children] as $child ) {
-					
-					// Check link permissions
-					if ( $this->Html->allowUrl($child[PowerMenu::$displayModel]['url']) !== true ) continue;
-					
-					echo $this->Html->tag( 'li', array(
-						$this->Html->link( $child[PowerMenu::$displayModel]['show'], $child[PowerMenu::$displayModel]['url'] )
-					));
-					
-				}
-				
-				$li.= $this->Html->tag( 'ul', ob_get_clean(), array(
-					'class' => 'subNav'
-				));
-				
-			}
-			
-			// Menu block extension
-			$li.= $this->fetch('admin.sidebar.'.$item[PowerMenu::$displayModel]['_name']);
-			
-			// Output the Item.
-			echo $this->Html->tag('li',$li,$li_opt);
+			// create the action link
+			echo $this->Html->tag(array(
+				'name' 		=> 'li',
+				'content' 	=> $this->Html->link( $child[PowerMenu::$displayModel]['show'], $child[PowerMenu::$displayModel]['url'] ),
+				'class' 	=> ( $itemIsActive ) ? 'active' : ''
+			));
 			
 		}
 		
 		
 		
-		/**
-		<li class="nav">
-			<span class="icon-denied"></span>
-			<a href="javascript:;">Error Pages</a>
-			
-			<ul class="subNav">
-				<li><a href="./error-401.html">401 Page</a></li>
-				<li><a href="./error-403.html">403 Page</a></li>
-				<li><a href="./error-404.html">404 Page</a></li>	
-				<li><a href="./error-500.html">500 Page</a></li>	
-				<li><a href="./error-503.html">503 Page</a></li>					
-			</ul>	
-		</li>
-		*/
-		?>
 		
-	</ul>
-			
-</div>
+		/**
+		 * Block Extension - View Block
+		 * admin.sidebar.{blockName}.actions
+		 */
+		
+		echo $this->fetch('admin.sidebar.'.$item[PowerMenu::$displayModel]['_name'].'.actions');
+		
+		
+		
+		/**
+		 * Creates the menu list
+		 * we are producing an accordion block so it's visible status ( class "in" )
+		 * depend by the $blockIsVisible truth value!
+		 */
+		$block.= $this->Html->tag( 'ul', ob_get_clean(), array(
+			'id' 	=> $blockDomId,
+			'class' => 'nav nav-pills nav-stacked collapse ' . ( $blockIsActive ? 'in' : '' )
+		));
+		
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Block Extension - View Block
+	 * admin.sidebar.{blockName}.after
+	 */
+	
+	$block.= $this->fetch('admin.sidebar.'.$item[PowerMenu::$displayModel]['_name'].'.after');
+	
+	
+	
+	
+	
+	
+	/**
+	 * Block Output
+	 */
+	
+	echo $this->Html->tag( 'div', $block, $block_opt );
+	
+	
+}
+

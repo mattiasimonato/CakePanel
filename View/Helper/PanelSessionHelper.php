@@ -1,34 +1,42 @@
 <?php
-
+/**
+ * CakePanel
+ */
 App::import( 'View/Helper', 'CakePower.PowerSessionHelper' );
 
 
 class PanelSessionHelper extends PowerSessionHelper {
 	
 	
+	
+	
+	
 /**	
  * Apply a custom template element based on the flash type message.
+ * You can manually set the element to render with the "element" attr as CakePHP teach.
+ * 
+ * CakePanel tries to run a custom tamplate based on flash type:
+ * success,error,alert,message
+ * 
+ * This rule is made by a string template:
+ * "CakePanel.flash/{type}"
+ * 
+ * You can change this string template to fit your need into the global PowerConfig object:
+ * PowerConfig::set( 'plugin.CakePanel.flashTpl', 'SubFolder/prefix.{type}' )
+ * -> /App/Elements/SubFolder/prefix.type.ctp
+ * 
+ * You can also extend this helper and implement the "flashTpl" property with your custom
+ * value: CakePanel's flashTpl will be applied only if an empty template was found!
+ * 
+ * 
  */
-	public function flash( $key = null, $attrs = array() ) {
+	
+	public function beforeRender() {
 		
-		// key is set to i can stup the template and output the flash.
-		if ( !empty($key) && is_string($key) ) {
-			
-			$type = ( $key == 'flash' ) ? '' : '.' . $key ;
-			
-			if ( $key == 'auth' ) $type = '.alert';
-			
-			if ( empty($attrs['element']) ) $attrs['element'] = 'CakePanel.flash' . $type;
-			
-			return parent::flash( $key, $attrs );
-		
+		if ( empty($this->flashTpl) ) {
+			$this->flashTpl = PowerConfig::get( 'plugin.CakePanel.flashTpl', 'CakePanel.flash/{key}' );	
 		}
-		
-		// blank key or list of flash to setup. pass to the CakePower's flashes utility.
-		return $this->flashes( $key, $attrs );
-		
+	
 	}
-	
-	
 	
 }

@@ -1,4 +1,8 @@
 <?php
+/**
+ * Bisogna capire cos'è e come si usa!!!
+ */
+
 
 if ( empty($links) ) return;
 

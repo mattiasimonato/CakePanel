@@ -1,0 +1,10 @@
+<?php
+/**
+ * AteUi - Authentication/Authorization Wargning Box
+ * 
+ */
+echo $this->element('AteUi.flash/alert',array(
+	'type' 		=> 'warning',
+	'title'		=> !empty($title)	? $title	: __('Warning!'),
+	'message' 	=> !empty($message)	? $message	: ''
+));

@@ -33,50 +33,20 @@ $this->end();
 
 // Default CSS
 $this->Html->css(array(
-	//'http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600',
-	'CakePanel.all',
-	'CakePanel.ie9' 		=> 'gte IE 9',
-	'CakePanel.ie8' 		=> 'gte IE 8',
-	
-	// Addons plugins
-	'CakePanel.addons/jquery.noty',
-	'CakePanel.addons/noty_theme_default',
-	'CakePanel.addons/noty_theme_facebook',
-	'CakePanel.addons/noty_theme_twitter',
-	'CakePanel.addons/noty_theme_mitgux',
-	
-	// CakePanel Customization
-	'CakePanel.cake_panel',
-	
+	'CakePanel.desktop'
 ),null,array(
 	'inline' 	=> false,
 	'debug' 	=> true
 ));
 
 
-
 // Default Javascript
 $this->Html->script(array(
-	'CakePanel.all',
-	
-	// Addons plugins
-	'CakePanel.addons/jquery.scrollsticky',
-	'CakePanel.addons/jquery.easing',
-	'CakePanel.addons/jquery.form',
-	'CakePanel.addons/jquery.noty',
-	'CakePanel.addons/jquery.scrollto',
-	
-	// CakePanel Customization
-	'CakePanel.cake_panel',
-	'CakePanel.cake_panel/panel.redirect',
-	'CakePanel.cake_panel/panel.notifications',
-	'CakePanel.cake_panel/panel.actions',
-	'CakePanel.cake_panel/panel.form',
-	'CakePanel.cake_panel/panel.init',
+	'CakePanel.libs/jquery/jquery.180',
+	'CakePanel.libs/bootstrap/bootstrap.min'
 ),array(
 	'inline' => false
 ));
-
 
 
 

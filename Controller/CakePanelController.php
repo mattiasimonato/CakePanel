@@ -50,7 +50,7 @@ class CakePanelController extends CakePowerController {
 					$cmp 	= $val;
 					$load 	= true;
 				} else {
-					$tmp 	= $key;
+					$cmp 	= $key;
 					$load 	= $val;
 				}
 			

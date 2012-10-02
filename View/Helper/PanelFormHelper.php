@@ -18,28 +18,33 @@ class PanelFormHelper extends PowerFormHelper {
 	
 	
 /**	
- * Single input notation with default values accordling with the Canvas HTML
+ * SINGLE INPUT
+ * Single input notation with default values according to TwitterBootstrap styles
  */
 	public function input( $name, $options = array() ) {
 		
+		// Default options structure
 		if ( !is_array($options) ) $options = array( 'label'=>$options );
+		$options+= array( 'error'=>array(), 'div'=>array() );
 		
-		if ( !isset($options['div']) || ( empty($options['div']) && $options['div'] !== false ) ) {
-			$options['div'] = 'field-group';
+		
+		// Setup the container class to fit TwitterBootstrap rules
+		if ( !empty($options['div']) && is_string($options['div']) ) $options['div'] = array( 'class'=>$options['div'] );
+		if ( is_array($options['div']) && empty($options['div']['class']) ) $options['div']['class'] = '';
+		if ( is_array($options['div']) && strpos($options['div']['class'],'control-group') === false ) $options['div']['class'] .= ' control-group';
+		
+		
+		// Setup the error string to fit TwitterBootstrap rules
+		if ( is_string($options['error']) ) $options['error'] = array( 'attributes'=>$options['error'] );
+		if ( is_array($options['error']) ) {
+
+			$options['error'] += array( 'attributes'=>array() );
 			
-		} else if ( is_array($options['div']) && empty($options['div']['class']) ) {
-			$options['div']['class'] = 'field-group';
+			if ( is_string($options['error']['attributes']) ) $options['error']['attributes'] = array( 'class'=>$options['error'] );
+			
+			if ( empty($options['error']['attributes']['class']) ) $options['error']['attributes']['class'] = 'help-block'; 
 			
 		}
-		
-		// Wraps works only if a div is required!
-		if ( $options['div'] !== false ) {
-			if ( !array_key_exists('between',$options) ) $options['between'] 	= '<div class="field">';
-			if ( !array_key_exists('after',$options) ) $options['after'] 		= '</div>';
-		}
-		
-		// tipsy default position.
-		if ( !array_key_exists('data-tipsy-gravity',$options) ) $options['data-tipsy-gravity'] = 'sw';
 		
 		return parent::input( $name, $options );
 	
@@ -47,110 +52,125 @@ class PanelFormHelper extends PowerFormHelper {
 	
 	
 /**	
- * Multiple input notation accordling to the Canvas HTML!!!
+ * MULTIPLE FIELDS
+ * - if you pass a "legend" field native CakePHP "inputs()" method will be used to create a fieldset region
+ * - if no "legend" is present then creates a row of input blocks
  * 
- * $block_options may contain some HTML attributes to enrich the block container.
- * $block_options['label'] may contain some HTML attributes to enrich the label tag as block title!
+ * ## Blocks Width:
+ * you can control block's width in tree ways:
+ * 
+ * A. each block can set it's own div>class property to a spanX value.
+ * B. you can define a default spanX for all blocks giving a "span=4" key to the method options.
+ *    if a block define it's spanX then defaul is not applied!
+ * C. automagically -  CakePOWER tries to split blocks to fit the row.
+ *    2 blocks -> span6
+ *    3 blocks -> span4
+ *    4 blocks -> span3
+ *    5 blocks -> span2
+ * 
+ * ## Inputs Width
+ * you can setup inputs() so each input control will fit it's block container by giving a "fit=true" key to the method options.
+ * a "span-fit" class will be appended to the input's options
+ * 
+ * 
+ * ## Quick Values
+ * you can set options with some quick values instead of array:
+ * 
+ * - "fit" 	-> array( 'fit'=>true )
+ * - "4" 	-> array( 'span'=>4 )
+ * - 4		-> array( 'span'=>4 )
+ * 
+ * 
+ * ## Row Block Configuration
+ * "options" property may contains options for the row block element such class name, styles, ids.
+ *  
  */
-	public function inputs( $fields = array(), $blacklist = array(), $block_options = array() ) {
+	public function inputs( $fields = array(), $black_list = array(), $options = array() ) {
 		
-		$model = $this->model();
-		
-		if ( is_array($fields) ) {
-			
-			$fields+= array( 'legend'=>false, 'fieldset'=>false );
-			
-			if ( array_key_exists('legend',$fields) ) {
-				$legend = $fields['legend'];
-				unset($fields['legend']);
-			}
-			
-			if ( array_key_exists('fieldset',$fields) ) {
-				$fieldset = $fields['fieldset'];
-				unset($fields['fieldset']);
-			}
-			
-		} else {
-			$legend = $fields;
-			$fields = array();
-		}
-		
-		if ( empty($fieldset) ) $fieldset = '';
-		
-		if ( empty($fields) ) $fields = array_keys($this->_introspectModel($model, 'fields'));
+		// OVERLOAD
+		// Use CakePHP original fieldset if a fieldset is required!
+		if ( array_key_exists('legend',$fields) ) return parent::inputs( $fields, $black_list );
 		
 		
-		// Start to build the fields from the list.
-		ob_start();
-		foreach ( $fields as $field=>$options ) {
+		
+		/**
+		 * Properties Configuration
+		 */
+		
+		// Quick options values
+		if ( is_string($options) || is_numeric($options) ) {
 			
-			// Get boot fieldName and fieldName=>fieldOptions structure.
-			if ( is_numeric($field) ) {
-				$field 		= $options;
-				$options 	= array();
-			}
-			
-			// Output the inplut + label.
-			ob_start();
-			
-			
-			// Compose label's default settings.
-			if ( empty($options['label']) ) {
-				$labelText 		= null;
-				$labelOptions 	= array();
-				
-			} else if ( is_array($options['label']) ) {
-				$labelOptions 	= $options['label'];
-				if ( empty($labelOptions['text']) ) $labelOptions['text'] = null;
-				$labelText 		= $labelOptions['text'];
-				unset($labelOptions['text']);
-				
+			if ( $options === 'fit' ) {
+				$options = array( 'fit'=>true );
 			} else {
-				$labelText		= $options['label'];
-				$labelOptions	= array();
+				$options = array( 'span'=>$options );
 			}
 			
-			unset($options['label']);
-			
-			// Echo the input
-			echo $this->input($field,array_merge($options,array(
-				'div' 		=> false,
-				'label' 	=> false,
-				'between'	=> '',
-				'after'		=> ''
-			)));
-			
-			// Echo the label
-			echo $this->label( $field, $labelText, $labelOptions );
-			
-			echo $this->Html->tag('div', ob_get_clean(), array(
-				'class'=>'field'
-			));
 		}
 		
+		// Default options array
+		$options+= array( 'span'=>'', 'fit'=>false, 'class'=>'' );
+		
+		// Setup the span width for input's block.
+		// auto: tries to fit the row with given block. minimum width is set to "span2"
+		// global: you can set a global with passing a "span=4" option to the inputs() method
+		if ( empty($options['span']) ) $options['span'] = floor( 12 / count($fields) );
+		if ( $options['span'] < 2 ) $options['span'] = 2;
+		
+		// Create span class name.
+		$base_span = 'span' . $options['span'];
 		
 		
 		
-		// Create the multiple fields markup.
 		
-		$block_options+= array( 'label'=>array(), 'class'=>'field-group' );
+		/**
+		 * Creates Input Blocks
+		 */
 		
-		// Build the block legend
-		if ( $legend ) $legend = $this->Html->tag( 'label', $legend, $block_options['label'] );
-		unset($block_options['label']);
-		
-		// Append classes to the container.
-		if ( isset($block_options['add_class']) ) {
-			$block_options['class'].= ' ' . $block_options['add_class'];
-			unset($block_options['add_class']);	
+		ob_start();
+		foreach ( $fields as $field_name=>$field_options ) {
+			
+			// accept non detailed items
+			if ( is_numeric($field_name) ) {
+				$field_name 	= $field_options;
+				$field_options 	= array();
+			}
+			
+			// BLOCK SPAN - sets up the basic span width for each field's block if not defined!
+			if ( empty($field_options['div']) ) $field_options['div'] = array();
+			if ( is_array($field_options['div']) && empty($field_options['div']['class']) ) $field_options['div']['class'] = $base_span;
+			
+			
+			// INPUT FIT - force the input to fit the block width
+			if ( $options['fit'] === true ) {
+				if ( empty($field_options['class']) ) $field_options['class'] = '';
+				if ( strpos($field_options['class'],'span-fit') === false ) $field_options['class'] .= ' span-fit';
+			}
+			
+			
+			echo $this->input( $field_name, $field_options );
+			
 		}
 		
-		return $this->Html->tag('div',array(
-			$legend,
-			ob_get_clean()
-		),$block_options);
+		// Clear block's related options values
+		unset($options['fit']);
+		unset($options['span']);
 		
+		
+		
+		/**
+		 * Creates the row block
+		 * options keys are now used to configure che row-block so you can set additional class names, styles, ids, etc.
+		 */
+		
+		$options['content'] = ob_get_clean(); 
+		
+		if ( strpos($options['class'],'row-fluid') === false ) $options['class'] .= ' row-fluid';
+		
+		return $this->Html->tag($options);
+	
 	}
+	
 	
 	
 
@@ -165,7 +185,7 @@ class PanelFormHelper extends PowerFormHelper {
 		$options += array( 'class'=>'', 'ajax'=>false );
 		
 		// Default class for the panel form
-		$options['class'] = 'form uniformForm ' . $options['class'];
+		$options['class'] = 'form ' . $options['class'];
 		if ( isset($options['class-override']) ) $options['class'] = $options['class-override'];
 		unset($options['class-override']);
 		
@@ -199,6 +219,10 @@ class PanelFormHelper extends PowerFormHelper {
  */
 	public function end( $options = null ) {
 		
+		if ( empty($options) ) return parent::end($options);
+		
+		/* need to know why have written this hack for the previous panel! */
+		
 		// Compose the basic label for the submit button
 		if ( !is_array($options) ) $options = array( 'label'=>$options );
 		if ( !isset($options['label']) ) $options['label'] = __('Save');
@@ -208,7 +232,7 @@ class PanelFormHelper extends PowerFormHelper {
 		// Sets up the basic css class for the panel's grid system
 		if ( $options['div'] !== false ) {
 			if ( empty($options['div']) ) $options['div'] = array();
-			if ( !isset($options['div']['class']) ) $options['div']['class'] = 'grid-24 form-actions';
+			if ( !isset($options['div']['class']) ) $options['div']['class'] = 'form-actions';
 		}
 		
 		return parent::end($options);

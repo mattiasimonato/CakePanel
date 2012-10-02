@@ -1,0 +1,10 @@
+<?php
+/**
+ * AteUi - Confirmation Box
+ * 
+ */
+echo $this->element('AteUi.flash/_structure',array(
+	'type' 		=> 'success',
+	'title'		=> !empty($title)	? $title	: __('Success!'),
+	'message' 	=> !empty($message)	? $message	: ''
+));
