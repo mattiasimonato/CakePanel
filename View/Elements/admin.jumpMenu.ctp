@@ -1,5 +1,21 @@
 <?php
 /**
+ * CakePANEL, CREDITS and LICENSING
+ * =====================================
+ *
+ * @author: 	Marco Pegoraro (aka MPeg, @ThePeg)
+ * @mail: 		marco(dot)pegoraro(at)gmail(dot)com
+ * @blog:		http://movableapp.com
+ * @web:		http://cakepower.org
+ * 
+ * This sofware is distributed under MIT license.
+ * Please read "license.txt" document into plugin's root
+ * 
+ */
+
+
+
+/**
  * JumpMenu
  * UI component to easy switch from an item to another
  */

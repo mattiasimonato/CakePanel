@@ -3363,6 +3363,11 @@ a.label:hover, a.badge:hover {
 .tr { text-align:right; }
 .tc { text-align:center; }
 .tj { text-align:justify; }
+.n, .normal { font-weight:normal; }
+.b, .bold { font-weight:bold; }
+.i, .italic { font-style:italic; }
+.u, .underline { text-decoration:underline; }
+.s, .stroke { text-decoration:line-through; }
 .none { display:none; }
 .block { display:block; }
 .inline-block {
@@ -3416,7 +3421,15 @@ a.label:hover, a.badge:hover {
   bottom:0;
   right:0;
 }
+.l, .left { float:left; }
+.r, .right { float:right; }
 .sprite-pos { background-position:0 0; }
+.clear-list {
+  margin:0;
+  padding:0;
+  list-style:none;
+  list-style-position:inside;
+}
 .inline-list, .ilist {
   margin:0;
   padding:0;

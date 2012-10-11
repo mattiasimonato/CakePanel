@@ -1,4 +1,18 @@
-
+<?php
+/**
+ * CakePANEL, CREDITS and LICENSING
+ * =====================================
+ *
+ * @author: 	Marco Pegoraro (aka MPeg, @ThePeg)
+ * @mail: 		marco(dot)pegoraro(at)gmail(dot)com
+ * @blog:		http://movableapp.com
+ * @web:		http://cakepower.org
+ * 
+ * This sofware is distributed under MIT license.
+ * Please read "license.txt" document into plugin's root
+ * 
+ */
+?>
 <!doctype html>
 <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
