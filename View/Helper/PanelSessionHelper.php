@@ -44,6 +44,7 @@ class PanelSessionHelper extends PowerSessionHelper {
  * You can also extend this helper and implement the "flashTpl" property with your custom
  * value: CakePanel's flashTpl will be applied only if an empty template was found!
  * 
+ * http://movableapp.com/2012/08/cakephp-custom-flash-messages-templates-by-cakepower/
  * 
  */
 	

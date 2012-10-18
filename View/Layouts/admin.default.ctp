@@ -67,20 +67,8 @@
 					
 					/**
 					 * Flash Messages
-					 * CakePanel handles many kind of flashMessages:
-					 *
-					 * $this->Session->setFlash( 'common message' );
-					 * $this->Session->setFlash( 'confirmation message', 'default', array(), 'ok' );
-					 * $this->Session->setFlash( 'error message', 'default', array(), 'ko' );
-					 * $this->Session->setFlash( 'warning message', 'default', array(), 'alert' );
-					 *
-					 * If you use CakePanel in combination of CakePower you can alias your Session component with "PowerSession" one
-					 * so it became easy to use custom methods:
-					 *
-					 * Session::message()
-					 * Session::confirm()
-					 * Session::error()
-					 * Session::alert()
+					 * Display all CakePOWER state notifications
+					 * http://movableapp.com/2012/07/cakepower-notification-system/ 
 					 */
 					echo $this->Html->tag(array(
 						'name'		=> 'div',
