@@ -39,16 +39,13 @@
 	 * Look at this element's source for documentation.
 	 */
 	echo $this->Html->tag( 'head', ( $head = $this->fetch('head') ) ? $head : $this->element('CakePanel.admin.default.head') );
-	
-	
-	
 	?>
 	
 	<body>
 		
 		<?php echo $this->element( 'CakePanel.admin.default.header' ) ?>
 		
-		<div class="container-fluid">
+		<div class="container-fluid" style="margin-top:60px;">
 			
 			<div class="row-fluid">
 			
@@ -57,7 +54,6 @@
 					<div id="sidebar" class="span3 affix">
 						<?php echo $this->element('CakePanel.admin.default.sidebar'); ?>
 					</div>
-					
 					
 				</div>
 				
