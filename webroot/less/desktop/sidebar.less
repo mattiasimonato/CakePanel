@@ -1,0 +1,89 @@
+/**
+ * CakePanel - Sidebar
+ */
+
+
+#sidebar {
+	
+	.mt( 22px );
+	.border-radius( 5px );
+	
+	border:1px solid #ddd;
+	box-shadow: 3px 3px 6px #ddd;
+	
+	
+	/* collapsible block */
+	.nav {
+		
+		.mb( 10px );
+	
+		h5 {
+			
+			.mb( 0 );
+			.pb( 5px );
+			.pl( 10px );
+			
+			i {
+				.mr( 10px );
+			}
+			
+			&.collapsed {
+				border-bottom: 1px solid #ddd;
+			}
+			
+			cursor:pointer;
+			
+		}
+		
+		ul {
+		
+			&.nav-list {
+				
+				font-size:.9em;
+				
+				.ph(0);
+				
+				a {
+					.ml(0);
+					.pl(35px);
+				}
+					
+			}
+			
+		}
+		
+		
+		
+		
+		/**
+		 * Last Item of the List
+		 * just remove some styles to fit container's bottom border.
+		 */
+		
+		&:last-child {
+			
+			h5 {
+				
+				&.collapsed {
+					border-bottom:0;
+				}
+				
+			}
+			
+			.mb( 0 );
+			
+			ul {
+				
+				&.in {
+					
+					.mb(10px);
+					
+				}
+				
+			}
+			
+		}
+	
+	}
+	
+}
