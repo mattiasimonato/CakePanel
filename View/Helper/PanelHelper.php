@@ -38,7 +38,7 @@ class PanelHelper extends AppHelper {
  * this approach allow to store 
  * 
  */
-	public function tableUI( $data, $settings = array() ) {
+	public function table( $data, $settings = array() ) {
 		
 		// string settings means custom object
 		if ( is_string($settings) ) $settings = array( 'className'=>$settings );
@@ -72,7 +72,7 @@ class PanelHelper extends AppHelper {
  *     ));
  * 
  */	
-	public function widgetUI( $content = '', $title = '', $settings = array() ) {
+	public function widget( $content = '', $title = '', $settings = array() ) {
 		
 		if ( is_array($content) ) {
 			$settings = $content;
