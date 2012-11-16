@@ -1,258 +1,299 @@
 <?php
-/**
- * CakePANEL, CREDITS and LICENSING
- * =====================================
- *
- * @author: 	Marco Pegoraro (aka MPeg, @ThePeg)
- * @mail: 		marco(dot)pegoraro(at)gmail(dot)com
- * @blog:		http://movableapp.com
- * @web:		http://cakepower.org
- * 
- * This sofware is distributed under MIT license.
- * Please read "license.txt" document into plugin's root
- * 
- */
-
-
-
-/**
- * CakePanel - PanelFormHelper
- * 
- * Extends CakePHP's FormHelper to match the admin layout html structure as default values for
- * more often used methods.
- */
-
-
-
 App::import( 'View/Helper', 'CakePower.PowerFormHelper' );
 
 class PanelFormHelper extends PowerFormHelper {
 	
+	protected $formClass = 'form';
+	
+	protected $inputDefaults = array(
+		'div' => array(
+			'class' => 'control-group'
+		),
+		'label' => array(
+			'class' => 'control-label'
+		),
+		'error' => array(
+			'attributes' => array(
+				'wrap'	=> 'div',
+				'class' => 'help-inline'
+			)
+		),
+		'format'	=> array('before', 'label', 'between', 'input', 'error', 'after' )
+	);
 	
 	
-	
-	
-	
-/**	
- * SINGLE INPUT
- * Single input notation with default values according to TwitterBootstrap styles
- */
-	public function input( $name, $options = array() ) {
+	/**
+	 * Translates inputs fieldset into an in-line input fields
+	 * 
+	 * every field should implement a "span" attribute to teach how to configure input's wrapper.
+	 * you can configure this param in a manner of ways:
+	 * 
+	 * - numeric:
+	 * will be translated into a "spanX" class for the cell to fit TwitterBootstrap's grid columns sizing
+	 * 
+	 * - CSS string:
+	 * "background:red"
+	 * will be applied as style property to the cell
+	 * 
+	 * - string:
+	 * will be applied as class string to the cell
+	 * 
+	 * - array
+	 * full tag() configuration array
+	 * 
+	 * ## INPUT's SIZE
+	 * You can setup input's size with standard classing:
+	 * .input-small .input-medium, ...
+	 * 
+	 * because cells lies into a row-fluid container you can set "span12" to each field to fit 100%
+	 * of cell size! (this is applied by default)
+	 * 
+	 */
+	public function inputs( $inputs = array() ) {
 		
-		// Default options structure
-		if ( !is_array($options) ) $options = array( 'label'=>$options );
-		$options+= array( 'error'=>array(), 'div'=>array() );
+		$inputs = PowerSet::todef($inputs);
+		unset($inputs['fieldset']);
+		unset($inputs['legend']);
 		
+		$_inputs = array();
 		
-		// Setup the container class to fit TwitterBootstrap rules
-		if ( !empty($options['div']) && is_string($options['div']) ) $options['div'] = array( 'class'=>$options['div'] );
-		if ( is_array($options['div']) && empty($options['div']['class']) ) $options['div']['class'] = '';
-		if ( is_array($options['div']) && strpos($options['div']['class'],'control-group') === false ) $options['div']['class'] .= ' control-group';
-		
-		
-		// Setup the error string to fit TwitterBootstrap rules
-		if ( is_string($options['error']) ) $options['error'] = array( 'attributes'=>$options['error'] );
-		if ( is_array($options['error']) ) {
-
-			$options['error'] += array( 'attributes'=>array() );
+		foreach ( $inputs as $field=>$settings ) {
 			
-			if ( is_string($options['error']['attributes']) ) $options['error']['attributes'] = array( 'class'=>$options['error'] );
+			if ( is_numeric($field) ) {
+				$field = $settings;
+				$settings = array();
+			}
 			
-			if ( empty($options['error']['attributes']['class']) ) $options['error']['attributes']['class'] = 'help-block'; 
+			$settings = PowerSet::todef($settings,'type',array(
+				'span' 	=> 3,
+				'class' => 'span12'
+			));
 			
+			$span = $settings['span'];
+			unset($settings['span']);
+			
+			$_input = array();
+			
+			if ( is_numeric($span) ) {
+				$_input['class'] = 'span' . $span;
+				
+			} elseif ( is_array($span) ) {
+				$_input = PowerSet::extend($_input,$span);
+				
+			} elseif ( strpos($span,':') ) {
+				$_input['style'] = $span;
+				
+			} elseif ( is_string($span) ) {
+				$_input['class'] = $span;
+				
+			}
+			
+			$_input['content'] = $this->input($field, $settings);
+			
+			$_inputs[] = $_input;
+		
 		}
 		
-		return parent::input( $name, $options );
+		return $this->Html->tag(array(
+			'class' 	=> 'row-fluid',
+			'content' 	=> $_inputs
+		));
 	
 	}
 	
 	
-/**	
- * MULTIPLE FIELDS
- * - if you pass a "legend" field native CakePHP "inputs()" method will be used to create a fieldset region
- * - if no "legend" is present then creates a row of input blocks
- * 
- * ## Blocks Width:
- * you can control block's width in tree ways:
- * 
- * A. each block can set it's own div>class property to a spanX value.
- * B. you can define a default spanX for all blocks giving a "span=4" key to the method options.
- *    if a block define it's spanX then defaul is not applied!
- * C. automagically -  CakePOWER tries to split blocks to fit the row.
- *    2 blocks -> span6
- *    3 blocks -> span4
- *    4 blocks -> span3
- *    5 blocks -> span2
- * 
- * ## Inputs Width
- * you can setup inputs() so each input control will fit it's block container by giving a "fit=true" key to the method options.
- * a "span-fit" class will be appended to the input's options
- * 
- * 
- * ## Quick Values
- * you can set options with some quick values instead of array:
- * 
- * - "fit" 	-> array( 'fit'=>true )
- * - "4" 	-> array( 'span'=>4 )
- * - 4		-> array( 'span'=>4 )
- * 
- * 
- * ## Row Block Configuration
- * "options" property may contains options for the row block element such class name, styles, ids.
- *  
- */
-	public function inputs( $fields = array(), $black_list = array(), $options = array() ) {
-		
-		// OVERLOAD
-		// Use CakePHP original fieldset if a fieldset is required!
-		if ( array_key_exists('legend',$fields) ) return parent::inputs( $fields, $black_list );
-		
-		
-		
-		/**
-		 * Properties Configuration
-		 */
-		
-		// Quick options values
-		if ( is_string($options) || is_numeric($options) ) {
-			
-			if ( $options === 'fit' ) {
-				$options = array( 'fit'=>true );
-			} else {
-				$options = array( 'span'=>$options );
-			}
-			
-		}
-		
-		// Default options array
-		$options+= array( 'span'=>'', 'fit'=>false, 'class'=>'' );
-		
-		// Setup the span width for input's block.
-		// auto: tries to fit the row with given block. minimum width is set to "span2"
-		// global: you can set a global with passing a "span=4" option to the inputs() method
-		if ( empty($options['span']) ) $options['span'] = floor( 12 / count($fields) );
-		if ( $options['span'] < 2 ) $options['span'] = 2;
-		
-		// Create span class name.
-		$base_span = 'span' . $options['span'];
-		
-		
-		
-		
-		/**
-		 * Creates Input Blocks
-		 */
-		
-		ob_start();
-		foreach ( $fields as $field_name=>$field_options ) {
-			
-			// accept non detailed items
-			if ( is_numeric($field_name) ) {
-				$field_name 	= $field_options;
-				$field_options 	= array();
-			}
-			
-			// BLOCK SPAN - sets up the basic span width for each field's block if not defined!
-			if ( empty($field_options['div']) ) $field_options['div'] = array();
-			if ( is_array($field_options['div']) && empty($field_options['div']['class']) ) $field_options['div']['class'] = $base_span;
-			
-			
-			// INPUT FIT - force the input to fit the block width
-			if ( $options['fit'] === true ) {
-				if ( empty($field_options['class']) ) $field_options['class'] = '';
-				if ( strpos($field_options['class'],'span-fit') === false ) $field_options['class'] .= ' span-fit';
-			}
-			
-			
-			echo $this->input( $field_name, $field_options );
-			
-		}
-		
-		// Clear block's related options values
-		unset($options['fit']);
-		unset($options['span']);
-		
-		
-		
-		/**
-		 * Creates the row block
-		 * options keys are now used to configure che row-block so you can set additional class names, styles, ids, etc.
-		 */
-		
-		$options['content'] = ob_get_clean(); 
-		
-		if ( strpos($options['class'],'row-fluid') === false ) $options['class'] .= ' row-fluid';
-		
-		return $this->Html->tag($options);
-	
-	}
-	
-	
-	
-
-	
-	
-/**	
- * create()
- * Initialize a form tag with some defaults options.
- */
-	public function create($model = null, $options = array()) {
-		
-		$options += array( 'class'=>'', 'ajax'=>false );
-		
-		// Default class for the panel form
-		$options['class'] = 'form ' . $options['class'];
-		if ( isset($options['class-override']) ) $options['class'] = $options['class-override'];
-		unset($options['class-override']);
-		
-		// Automagically ajaxForm provided by Panel js object
-		if ( $options['ajax'] ) $options['data-ajax'] = true;
-		unset($options['ajax']);
-		
-		// Compose the Ajax Redirect hidden option
-		$_redirect = '';
-		if ( isset($options['_redirect']) ) {
-			$_redirect = $options['_redirect'];
-			unset($options['_redirect']);
-			
-			$_redirect = $this->Html->tag(
-				'div',
-				$this->input( '_redirect',array( 'name'=>'_redirect', 'type'=>'hidden', 'value'=>$_redirect, 'label'=>false, 'div'=>false ) ),
-				array( 'style'=>'display:none' )
-			);
-			
-		}
-		
-		return parent::create($model,$options) . $_redirect;
-		
-	}
-	
-
 	
 /**
- * end()
- * Setup some basic classes for the input.
- */
-	public function end( $options = null ) {
+	 * Generates a project custom inputs fields
+	 */
+	public function input( $fieldName, $options = array() ) {
 		
-		if ( empty($options) ) return parent::end($options);
+		// Accepts a string option as field label
+		if ( is_string($options) ) $options = array( 'label'=>$options );
 		
-		/* need to know why have written this hack for the previous panel! */
 		
-		// Compose the basic label for the submit button
-		if ( !is_array($options) ) $options = array( 'label'=>$options );
-		if ( !isset($options['label']) ) $options['label'] = __('Save');
-		
-		$options += array( 'div'=>null );
-		
-		// Sets up the basic css class for the panel's grid system
-		if ( $options['div'] !== false ) {
-			if ( empty($options['div']) ) $options['div'] = array();
-			if ( !isset($options['div']['class']) ) $options['div']['class'] = 'form-actions';
+		/**
+		 * Handles special kinds of inputs
+		 */
+		if ( !empty($options['type']) ) {
+			
+			switch ( $options['type'] ) {
+				
+				case 'radio':
+					$options+= array( 'options' );
+					$values = $options['options'];
+					
+					unset($options['type']);
+					unset($options['options']);
+					
+					return $this->radio( $fieldName, $values, $options );
+					break;
+				
+				case 'checkbox':
+					$options+= array( 'options'=>'' );
+					$values = $options['options'];
+					
+					unset($options['type']);
+					unset($options['options']);
+					
+					return $this->checkbox( $fieldName, $values, $options );
+					break;
+				
+				case 'tos':
+					unset($options['type']);
+					return $this->tos( $fieldName, $options );
+					break;
+				
+			}
+			
 		}
 		
-		return parent::end($options);
+		/**
+		 * Helper behavior
+		 */
+		if ( array_key_exists('helper',$options) ) {
+			
+			$options['data-helper'] = 'on';
+			
+			// opzioni di default per il comportamento widget
+			if ( !array_key_exists('data-placement',$options) ) 		$options['data-placement'] 	= 'right';
+			if ( !array_key_exists('data-trigger',$options) ) 			$options['data-trigger'] 	= 'focus';
+			
+			// estrapolare il titolo del widget
+			if ( strpos($options['helper'],'-') !== false ) list( $title, $options['helper'] ) = PowerString::explodeFirstOccourrence( '-', $options['helper'] );
+			
+			// eredita un titolo predefinito:
+			if ( empty($title) && !empty($options['label']) && is_string($options['label']) ) $title = $options['label'];
+			if ( empty($title) ) $title = $fieldName;
+			
+			$options['data-original-title'] = trim($title);
+			
+
+			$options['data-content'] = trim($options['helper']);
+			unset($options['helper']);
+			
+		}
+		
+		
+		return parent::input( $fieldName, $options );
 		
 	}
+	
+	
+	/**
+	 * Radio Button
+	 */
+	public function radio( $fieldName, $radioValues, $options = array() ) {
+		
+		// options default values
+		if ( empty($options) || !is_array($options) ) $options = array();
+		$options+= array( 'inline'=>null );
+		
+		$radio = parent::radio($fieldName,$radioValues,array(
+			'legend' 	=> false,
+			'separator' => '--**--'
+		));
+		
+		
+		$radios = '';
+		foreach ( explode('--**--',$radio) as $radio ) {
+			
+			preg_match_all("|<label(.*)>|U", $radio, $matches);
+			$radio = str_replace( $matches[0][0], '', $radio );
+			$radio = $matches[0][0] . $radio;
+			
+			$radios.= str_replace( '<label', '<label class="radio' . ( $options['inline'] === true ? ' inline' : '' ) . '"', $radio );
+			
+		}
+		
+		
+		// clean inputs related options before wrapper generation
+		unset($options['inline']);
+		
+		
+		$field = $this->input($fieldName,$options);
+		
+		// replace text field with radio values
+		preg_match_all("|<input(.*)/>|U", $field, $matches);
+		$field = str_replace( $matches[0][0], $radios, $field );
+	
+		return $field;
+		
+	}
+	
+	/**
+	 * Checkbox Field
+	 */
+	public function checkbox( $fieldName, $values, $options = array() ) {
+		
+		// accepts string value as option
+		if ( !is_array($values) && is_string($options) ) $options = array( 'text'=>$options );
+		
+		// options default values
+		if ( empty($options) || !is_array($options) ) $options = array();
+		$options+= array( 'hiddenField'=>null, 'inline'=>null );
+		
+		// generates input markup
+		$items = '';
+		
+		// many values
+		if ( is_array($values) ) {
+			
+			foreach ( $values as $key=>$val ) {
 
+				$items.= $this->Html->tag(array(
+					'name'	=> 'label',
+					'class' => 'checkbox' . ( $options['inline'] === true ? ' inline' : '' ),
+					'content' => array(
+						parent::checkbox( $fieldName, array(
+							'value'			=> $val,
+							'hiddenField'	=> empty($items) && $options['hiddenField']!==false
+						)),
+						$val
+					)
+				));
+
+			}
+		
+		// single value with optional disclaimer
+		} else {
+			
+			$options+= array( 'text'=>'' );
+			
+			$items.= $this->Html->tag(array(
+				'name'	=> 'label',
+				'class' => 'checkbox',
+				'content' => array(
+					parent::checkbox( $fieldName, array(
+						'value'			=> $values,
+						'hiddenField'	=> empty($items) && $options['hiddenField']!==false
+					)),
+					$options['text']
+				)
+			));
+			
+			unset($options['text']);
+			
+		}
+		
+		// clean inputs related options before wrapper generation
+		unset($options['hiddenField']);
+		unset($options['inline']);
+		
+		// creates a standard input box
+		$field = $this->input( $fieldName, $options );
+		
+		// replace text field with radio values
+		preg_match_all("|<input(.*)/>|U", $field, $matches);
+		$field = str_replace( $matches[0][0], $items, $field );
+		
+		
+		return $field;
+		
+	}
+	
+	
+	
+	
+	
 }

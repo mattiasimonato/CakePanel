@@ -5486,3 +5486,33 @@ a.badge:hover {
 .box .table {
   margin: 0;
 }
+.form .help-inline {
+  display: block;
+  font-size: 13px;
+}
+.form select,
+.form textarea,
+.form input[type="text"],
+.form input[type="password"],
+.form input[type="datetime"],
+.form input[type="datetime-local"],
+.form input[type="date"],
+.form input[type="month"],
+.form input[type="time"],
+.form input[type="week"],
+.form input[type="number"],
+.form input[type="email"],
+.form input[type="url"],
+.form input[type="search"],
+.form input[type="tel"],
+.form input[type="color"],
+.form .uneditable-input {
+  margin-bottom: 0;
+}
+.form .error label {
+  color: #953b39;
+}
+.form .error .help-inline {
+  color: #953b39;
+  font-style: italic;
+}

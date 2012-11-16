@@ -1,40 +1,33 @@
 
 
-.form { margin-bottom: 1em; }
-
-
-/* ---------------------------------- */
-/* @Label */
-
-.form .field-group label { font-size: 13px; font-weight: 600; color: #444; display: block; margin-bottom: .25em; }
-
-
-/* ---------------------------------- */
-/* @Field */
-
-.form .field-group .field { font-size: 14px; display: inline-block; margin: 0 .65em 1.5em 0; }
-	.form .field-group .field label { font-size: 11px; font-weight: normal; color: #888; display: block; margin: 0 0 0 2px; }
-
-.form fieldset .field-group:last-child .field { margin-bottom: 0; }
-
-
-/* ---------------------------------- */
-/* @Controls */
-
-.form .control-group { margin-bottom: 2em; }
-.form .control-group .field { display: block; margin-bottom: .5em; margin-right: 2em; }
-.form .control-group .field label { font-size: 13px; color: #444; display: inline-block; cursor: pointer; }
-.form .control-group input { position: relative; top: 2px; cursor: pointer; }
-.form .field-group.inline .field { display: inline-block; margin-bottom: .5em; }
-
-
-
-
-
-.form fieldset { 
-	margin-bottom: 4em; 
+.form {
 	
+	.help-inline {
+		.block;
+		font-size: @baseFontSize - round( ( @baseFontSize / 100 ) * 10 );
+	}
+	
+	select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+		.mb(0);
+	}
+	
+	
+	/**
+	 * Error Variants
+	 */
+	.error {
+		
+		@textColor: darken( @errorText, 10% );
+	
+		label {
+			color:@textColor;
+		}
+		
+		.help-inline {
+			color:@textColor;
+			font-style: italic;
+		}
+		
+	}
 	
 }
-
-.form fieldset+.actions { margin-top: -3em; }
