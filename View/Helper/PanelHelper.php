@@ -11,6 +11,14 @@
  */
 class PanelHelper extends AppHelper {
 	
+	
+	public function title( $title = '' ) {
+		
+		$this->_View->assign( 'title_for_view', $title );
+		
+	}
+	
+	
 /**	
  * Utility method to render a TableUI object with standard or custom (extended) object
  * 
@@ -40,6 +48,12 @@ class PanelHelper extends AppHelper {
  */
 	public function table( $data, $settings = array() ) {
 		
+		if ( isset($data['data']) ) {
+			$settings = $data;
+			$data = $settings['data'];
+			unset($settings['data']);
+		}
+		
 		// string settings means custom object
 		if ( is_string($settings) ) $settings = array( 'className'=>$settings );
 		
@@ -55,7 +69,7 @@ class PanelHelper extends AppHelper {
 		
 		// creates table object instance
 		$obj = new $className( $this->_View, $settings );
-		return $obj->show($data);
+		return $obj->render($data);
 		
 	}
 	
@@ -63,17 +77,18 @@ class PanelHelper extends AppHelper {
 /**
  * Utility method to render a PanelWidgetUI object with standard or custom class
  * 
- *     $this->Panel->widgetUI( 'content...', 'My Widget' );
+ *     $this->Panel->container( 'content...', 'My Widget' );
  *     
- *     $this->Panel->widgetUI(array(
+ *     $this->Panel->container(array(
  *       'title'     => 'My Title',
  *       'content'   => 'foo...',
- *       'className' => 'MyPlugin.Vendor/MyCustomWidgetClass'
+ *       'className' => 'MyPlugin.Vendor/MyCustomContainerClass'
  *     ));
  * 
  */	
-	public function widget( $content = '', $title = '', $settings = array() ) {
+	public function container( $content = '', $title = '', $settings = array() ) {
 		
+		// handle full array configuration
 		if ( is_array($content) ) {
 			$settings = $content;
 			unset($content);
@@ -81,21 +96,24 @@ class PanelHelper extends AppHelper {
 		}
 		
 		// apply defaults to settings
-		if ( !is_array($settings) || empty($settings) ) $options = array();
-		$settings+= array( 'className'=>'', 'title'=>'', 'content'=>'' );
+		$settings = PowerSet::todef( $settings,'className',array(
+			'className' => '',
+			'title'		=> '',
+			'content'	=> ''
+		));
 		
 		// fill settings from raw properties
 		if ( !empty($title) ) 	$settings['title'] 		= $title;
 		if ( !empty($content) ) $settings['content'] 	= $content;
 		
 		// define and import custom object
-		$className = !empty($settings['className']) ? $settings['className'] : 'CakePanel.Vendor/PanelWidgetUi';
+		$className = !empty($settings['className']) ? $settings['className'] : 'CakePanel.Vendor/PanelContainerUi';
 		list( $className, $package,  ) = packageCmp($className);
 		App::uses( $className, $package );
 		unset($settings['className']);
 		
 		$obj = new $className( $this->_View, $settings );
-		return $obj->show();
+		return $obj->render();
 		
 	}
 	

@@ -5371,3 +5371,118 @@ a.badge:hover {
 #sidebar .nav:last-child ul.in {
   margin-bottom: 10px;
 }
+.box {
+  *zoom: 1;
+  *zoom: 1;
+  border: 1px solid #999;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  display: block;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.box:before,
+.box:after {
+  display: table;
+  content: "";
+}
+.box:after {
+  clear: both;
+}
+.box:before,
+.box:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.box:after {
+  clear: both;
+}
+.box .box-head {
+  *zoom: 1;
+  *zoom: 1;
+  border-bottom: 1px solid #999;
+  font-size: 15px;
+  color: grayDark;
+  background: #eee;
+  text-shadow: 0 1px 0 white;
+}
+.box .box-head:before,
+.box .box-head:after {
+  display: table;
+  content: "";
+}
+.box .box-head:after {
+  clear: both;
+}
+.box .box-head:before,
+.box .box-head:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.box .box-head:after {
+  clear: both;
+}
+.box .box-head h3 {
+  margin: 0;
+  padding: 5px 20px;
+  line-height: 1.5em;
+  font-size: 15px;
+}
+.box .box-body {
+  *zoom: 1;
+  *zoom: 1;
+}
+.box .box-body:before,
+.box .box-body:after {
+  display: table;
+  content: "";
+}
+.box .box-body:after {
+  clear: both;
+}
+.box .box-body:before,
+.box .box-body:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.box .box-body:after {
+  clear: both;
+}
+.box .box-body .wrap {
+  *zoom: 1;
+  *zoom: 1;
+  margin: 10px 20px;
+}
+.box .box-body .wrap:before,
+.box .box-body .wrap:after {
+  display: table;
+  content: "";
+}
+.box .box-body .wrap:after {
+  clear: both;
+}
+.box .box-body .wrap:before,
+.box .box-body .wrap:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.box .box-body .wrap:after {
+  clear: both;
+}
+.box.collapsible .box-head {
+  cursor: pointer;
+}
+.box.collapsible.collapsed .box-head {
+  border-bottom: none;
+}
+.box .table {
+  margin: 0;
+}

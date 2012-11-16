@@ -60,7 +60,8 @@ $this->Html->css(array(
 // Default Javascript
 $this->Html->script(array(
 	'CakePanel.libs/jquery/jquery.182',
-	'CakePanel.libs/bootstrap/bootstrap.min'
+	'CakePanel.libs/bootstrap/bootstrap.min',
+	'CakePanel.jquery.cake_panel_collapsible'
 ),array(
 	'inline' => false
 ));
