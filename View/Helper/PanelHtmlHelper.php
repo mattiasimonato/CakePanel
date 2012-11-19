@@ -50,6 +50,7 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 	 * 
 	 * 
 	 */
+	/*
 	public function tag($name='div', $text = null, $options = array()) {
 		
 		// call with multiple params does not accept nested widgets
@@ -78,6 +79,38 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 		
 		}
 		// -- XTYPE --
+		
+	}
+	*/
+	
+	protected function xtypeOptions($xtype, $name, $text, $options) {
+		
+		// apply parent configuration
+		list ($name, $text, $options) = parent::xtypeOptions($xtype, $name, $text, $options);
+		
+		switch ($xtype) {
+			case 'table':
+				$options['allowEmpty'] = true;
+				$text = '-';
+				break;
+		}
+		
+		return array($name, $text, $options);
+		
+	}
+	
+	protected function xtypeTag($xtype, $name, $text, $options) {
+		
+		switch ($xtype) {
+			case 'container':
+				return $this->Panel->container(PowerSet::extend($options,array(
+					'content' => $text
+				)));
+			case 'table':
+				return $this->Panel->table($options);
+		}
+		
+		return parent::xtypeTag($xtype, $name, $text, $options);
 		
 	}
 	

@@ -240,13 +240,13 @@ class PanelFormHelper extends PowerFormHelper {
 		if ( is_array($values) ) {
 			
 			foreach ( $values as $key=>$val ) {
-
+				
 				$items.= $this->Html->tag(array(
 					'name'	=> 'label',
 					'class' => 'checkbox' . ( $options['inline'] === true ? ' inline' : '' ),
 					'content' => array(
 						parent::checkbox( $fieldName, array(
-							'value'			=> $val,
+							'value'			=> $key,
 							'hiddenField'	=> empty($items) && $options['hiddenField']!==false
 						)),
 						$val
