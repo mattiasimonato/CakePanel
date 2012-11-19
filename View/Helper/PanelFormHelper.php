@@ -51,7 +51,7 @@ class PanelFormHelper extends PowerFormHelper {
 	 */
 	public function inputs( $inputs = array() ) {
 		
-		$inputs = PowerSet::todef($inputs);
+		$inputs = PowerSet::def($inputs);
 		unset($inputs['fieldset']);
 		unset($inputs['legend']);
 		
@@ -64,10 +64,10 @@ class PanelFormHelper extends PowerFormHelper {
 				$settings = array();
 			}
 			
-			$settings = PowerSet::todef($settings,'type',array(
-				'span' 	=> 3,
+			$settings = PowerSet::def($settings, array(
+				'span' => 3,
 				'class' => 'span12'
-			));
+			), 'type');
 			
 			$span = $settings['span'];
 			unset($settings['span']);

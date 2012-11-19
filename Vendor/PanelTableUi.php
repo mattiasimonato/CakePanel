@@ -107,7 +107,7 @@ class PanelTableUI extends PanelHtmlHelper {
 		
 		if ( empty($data) ) return;
 			
-		$this->data = PowerSet::todef($data);
+		$this->data = PowerSet::def($data);
 		
 		$this->autoModel();
 		
@@ -158,16 +158,14 @@ class PanelTableUI extends PanelHtmlHelper {
 		
 		#ddebug($this->settings['columns']);
 		
-		foreach ( $this->settings['columns'] as $this->_col=>$this->_cell ) {
-			
+		foreach ($this->settings['columns'] as $this->_col=>$this->_cell) {
 			$content[] = $this->renderTheadCell();
-			
 		}
 		
 		$settings = $this->settings['thead'];
 		unset($settings['th']);
 		
-		return $this->tag( 'thead', array( 'name'=>'tr', 'content'=>$content ), $settings );
+		return $this->tag('thead', array('name'=>'tr', 'content'=>$content), $settings);
 		
 	}
 	
@@ -180,15 +178,12 @@ class PanelTableUI extends PanelHtmlHelper {
 		
 		
 		// apply sort properties 
-		if ( $this->settings['sortable'] && isset($this->_View->Paginator) ) {
-			
+		if ($this->settings['sortable'] && isset($this->_View->Paginator)) {
 			$label = $this->_View->Paginator->sort($this->_cell['order'],$label);
-			
 		}
 
 		// apply defaults
-		$settings = PowerSet::extend($this->settings['thead'][$tagName],$this->_cell);
-		$settings = PowerSet::extend($settings,$this->_cell[$tagName]);
+		$settings = PowerSet::extend($this->settings['thead'][$tagName], $this->_cell, $this->_cell[$tagName]);
 		
 		// define callback name to search as class optional method or configuration closure
 		$callback	= 'thead' . ucfirst($settings['model']) . ucFirst(Inflector::camelize($settings['field']));
@@ -287,8 +282,7 @@ class PanelTableUI extends PanelHtmlHelper {
 		$tagName = $this->settings['tbody']['tagName'];
 		
 		// apply defaults
-		$settings = PowerSet::extend($this->settings['tbody'][$tagName],$this->_cell);
-		$settings = PowerSet::extend($settings,$this->_cell[$tagName]);
+		$settings = PowerSet::extend($this->settings['tbody'][$tagName], $this->_cell, $this->_cell[$tagName]);
 		
 		// define callback name to search as class optional method or configuration closure
 		$callback	= 'tbody' . ucfirst($settings['model']) . ucFirst(Inflector::camelize($settings['field']));
@@ -364,7 +358,7 @@ class PanelTableUI extends PanelHtmlHelper {
 		
 	}
 	
-	protected function renderTbodyCellItem( $name, $config ) {
+	protected function renderTbodyCellItem($name, $config=array()) {
 		
 		$config = PowerSet::extend(array(
 			'model' => $this->settings['model'],
@@ -512,14 +506,14 @@ class PanelTableUI extends PanelHtmlHelper {
 		if ( !empty($this->model) ) 	$this->settings['model'] 	= $this->model;
 		if ( !empty($this->columns) ) 	$this->settings['columns'] 	= $this->columns;
 		
-		$settings = PowerSet::todef( $settings, 'model' );
+		$settings = PowerSet::def($settings, null, 'model');
 		
 		// parse given configuration properties
-		$settings = $this->parseTableSettings( $settings );
-		$settings = $this->parseCaptionSettings( $settings );
-		$settings = $this->parseTheadSettings( $settings );
-		$settings = $this->parseTbodySettings( $settings );
-		$settings = $this->parseTfootSettings( $settings );
+		$settings = $this->parseTableSettings($settings);
+		$settings = $this->parseCaptionSettings($settings);
+		$settings = $this->parseTheadSettings($settings);
+		$settings = $this->parseTbodySettings($settings);
+		$settings = $this->parseTfootSettings($settings);
 		
 		// imports settings from first level to proper places
 		if ( isset($settings['bordered']) ) { 	$settings['table']['bordered'] 		= $settings['bordered']; 	unset($settings['bordered']); 	}
@@ -528,11 +522,8 @@ class PanelTableUI extends PanelHtmlHelper {
 		if ( isset($settings['condensed']) ) { 	$settings['table']['condensed'] 	= $settings['condensed']; 	unset($settings['condensed']); 	}
 		
 		
-		
-		
 		// apply default values
-		$tmp 		= PowerSet::extend( $this->_settings, $this->settings );
-		$settings 	= PowerSet::extend( $tmp, $settings );
+		$settings = PowerSet::extend( $this->_settings, $this->settings, $settings );
 		
 		// apply config transformations
 		$settings = $this->applyTableSettings( $settings );
@@ -541,6 +532,7 @@ class PanelTableUI extends PanelHtmlHelper {
 		$settings = $this->applyTbodySettings( $settings );
 		$settings = $this->applyTfootSettings( $settings );
 		
+		#ddebug($settings);
 		return $settings;
 		
 	}
@@ -549,7 +541,7 @@ class PanelTableUI extends PanelHtmlHelper {
 		
 		if ( empty($settings['table']) ) return $settings;
 		
-		$settings['table'] = $this->tagOptions( $settings['table'] );
+		$settings['table'] = $this->tagOptions($settings['table']);
 		
 		return $settings;
 		
@@ -567,10 +559,10 @@ class PanelTableUI extends PanelHtmlHelper {
 		
 		if ( empty($settings['thead']) ) return $settings;
 		
-		$settings['thead'] = $this->tagOptions( $settings['thead'] );
+		$settings['thead'] = $this->tagOptions($settings['thead']);
 		
-		if ( !empty($settings['thead']['tr']) ) $settings['thead']['tr'] = $this->tagOptions( $settings['thead']['tr'] );
-		if ( !empty($settings['thead']['th']) ) $settings['thead']['th'] = $this->tagOptions( $settings['thead']['th'] ); 
+		if ( !empty($settings['thead']['tr']) ) $settings['thead']['tr'] = $this->tagOptions($settings['thead']['tr']);
+		if ( !empty($settings['thead']['th']) ) $settings['thead']['th'] = $this->tagOptions($settings['thead']['th']); 
 		
 		return $settings;
 		
@@ -610,10 +602,10 @@ class PanelTableUI extends PanelHtmlHelper {
 				$val = array();
 			}
 			
-			$val = PowerSet::todef( $val, 'label', array(
+			$val = PowerSet::def($val, array(
 				'model' => $this->settings['model'],
 				'field' => 'id' 
-			));
+			), 'label');
 			
 			$items[$key] = $val;
 		
@@ -694,28 +686,27 @@ class PanelTableUI extends PanelHtmlHelper {
 	
 	protected function initColumns() {
 		
-		$old = PowerSet::todef($this->settings['columns']);
+		$old = PowerSet::def($this->settings['columns']);
 		
 		if ( empty($old) ) {
 			$old = $this->autoColumns();
 		}
+		
 		
 		// fill a new row of colums configurations
 		$columns = array();
 		foreach ( $old as $key=>$val ) {
 			
 			// numeric key value to associative format
-			if ( is_numeric($key) ) {
-				
+			if (is_numeric($key)) {
 				$key = $val;
-				
 			}
 			
 			// compose data related properties
-			list ( $model, $field ) = pluginSplit( $key );
+			list ($model, $field) = pluginSplit($key);
 			
 			// apply default values to the configuration array
-			$val = PowerSet::todef( $val, 'label', array( 'model'=>$model, 'field'=>$field, 'label'=>$key ));
+			$val = PowerSet::def($val, array('model'=>$model, 'field'=>$field, 'label'=>$key), 'label');
 			
 			$val = PowerSet::extend(array(
 				'label' 	=> '',
@@ -727,8 +718,9 @@ class PanelTableUI extends PanelHtmlHelper {
 				'direction' => null
 			),$val);
 			
-			$val['th'] = $this->tagOptions( $val['th'] );
-			$val['td'] = $this->tagOptions( $val['td'] );
+			// apply tag options to handle string or array configuration
+			$val['th'] = PowerSet::filter($this->tagOptions($val['th']));
+			$val['td'] = PowerSet::filter($this->tagOptions($val['td']));
 			
 			// apply translated labels
 			if ( $this->settings['translate'] ) $val['label'] = __($val['label']);
@@ -744,7 +736,6 @@ class PanelTableUI extends PanelHtmlHelper {
 		
 		}
 		
-		#ddebug($columns);
 		$this->settings['columns'] = $columns;
 		
 	}

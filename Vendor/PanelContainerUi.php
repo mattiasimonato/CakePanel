@@ -118,7 +118,7 @@ class PanelContainerUI extends PanelHtmlHelper {
 		
 		// apply wrapper
 		if ( isset($this->settings['titleWrapper']) ) {
-			$wrapper = $this->tagOptions($this->settings['titleWrapper'], 'class', array('content'=>array()));
+			$wrapper = $this->tagOptions($this->settings['titleWrapper'], array('content'=>array()));
 			$wrapper['content'] 	= $settings['content'];
 			$settings['content'] 	= $wrapper;
 		}
@@ -153,7 +153,7 @@ class PanelContainerUI extends PanelHtmlHelper {
 		
 		// apply wrapper
 		if ( isset($this->settings['bodyWrapper']) ) {
-			$wrapper = $this->tagOptions($this->settings['bodyWrapper'], 'class', array('content'=>array()));
+			$wrapper = $this->tagOptions($this->settings['bodyWrapper'], array('content'=>array()));
 			$wrapper['content'] 	= $settings['content'];
 			$settings['content'] 	= $wrapper;
 		}
@@ -198,11 +198,11 @@ class PanelContainerUI extends PanelHtmlHelper {
 	 */
 	protected function parseSettings( $settings = array() ) {
 		
-		$settings = PowerSet::todef($settings, 'content', array(
+		$settings = PowerSet::def($settings,array(
 			'title' 		=> array(),
 			'body'		=> array(),
 			'content' 	=> array()
-		));
+		),'content');
 		
 		$settings = $this->parseHeadSettings($settings);
 		$settings = $this->parseBodySettings($settings);
@@ -220,14 +220,14 @@ class PanelContainerUI extends PanelHtmlHelper {
 		
 		if ( is_array($settings['title']) ) $settings['title'] = array( 'content'=>$settings['title'] );
 		
-		$settings['title'] = PowerSet::todef( $settings['title'], 'content', array('content'=>'') );
+		$settings['title'] = PowerSet::def($settings['title'], array('content'=>''), 'content');
 		
 		return $settings;
 	}
 	
 	protected function parseBodySettings($settings = array()) {
 		
-		$settings['body'] = $this->tagOptions( $settings['body'], 'class', array(
+		$settings['body'] = $this->tagOptions($settings['body'], array(
 			'content' => $settings['content']
 		));
 		
@@ -250,7 +250,7 @@ class PanelContainerUI extends PanelHtmlHelper {
 				
 			}
 			
-			$settings['collapsible'] = PowerSet::todef($settings['collapsible']);
+			$settings['collapsible'] = PowerSet::def($settings['collapsible']);
 			$settings['collapsible'] = PowerSet::extend($this->collapsible,$settings['collapsible']);
 			$settings['collapsible'] = PowerSet::extend($this->_collapsible,$settings['collapsible']);
 			

@@ -24,10 +24,10 @@ class PanelHelper extends AppHelper {
  * 
  *     // view code - custom tableUI object
  *     class myTable extends PanelTableUI { ... }
- *     echo $this->Panel->tableUI( $list, 'myTable' );
+ *     echo $this->Panel->table( $list, 'myTable' );
  *     
  *     // view core - generic tableUI with configurations
- *     echo $this->Panel->tableUI( $list, array(
+ *     echo $this->Panel->table( $list, array(
  * 	     'modelName' => 'Foo'
  *     ));
  * 
@@ -35,8 +35,8 @@ class PanelHelper extends AppHelper {
  * By default $tableUI is searched inside "Vendor" package but you should customize loading
  * search path as follow:
  * 
- *     echo $this->Panel->tableUI( $list, 'Plugin.Vendor/customTableObject' );
- *     echo $this->Panel->tableUI( $list, 'Plugin.Vendor/subpackage/customTableObject' );
+ *     echo $this->Panel->table( $list, 'Plugin.Vendor/customTableObject' );
+ *     echo $this->Panel->table( $list, 'Plugin.Vendor/subpackage/customTableObject' );
  * 
  * this kind of $tableUI name will causes: 
  * 
@@ -96,11 +96,11 @@ class PanelHelper extends AppHelper {
 		}
 		
 		// apply defaults to settings
-		$settings = PowerSet::todef( $settings,'className',array(
+		$settings = PowerSet::def( $settings,array(
 			'className' => '',
 			'title'		=> '',
 			'content'	=> ''
-		));
+		),'className');
 		
 		// fill settings from raw properties
 		if ( !empty($title) ) 	$settings['title'] 		= $title;

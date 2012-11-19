@@ -55,24 +55,29 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 		// call with multiple params does not accept nested widgets
 		if ( !is_array($name) || PowerSet::is_vector($name) ) return parent::tag($name,$text,$options);
 		
-		$name = PowerSet::extend(array('name'=>'div'),$name);
+		// -- XTYPE --
+		$xtype = null;
+		if ( isset($name['xtype']) ) {
+			$xtype = $name['xtype'];
+			unset($name['xtype']);
+		}
 		
-		switch( $name['name'] ) {
+		switch( $xtype ) {
 			
 			case 'container':
-				unset($name['name']);
 				return $this->Panel->container($name);
 				
 			case 'table':
-				unset($name['name']);
 				return $this->Panel->table($name);
-				
 			
+			// apply parents xtypes:
 			default:
+				$name['xtype'] = $xtype;
 				return parent::tag($name,$text,$options);
 				break;
 		
 		}
+		// -- XTYPE --
 		
 	}
 	
