@@ -67,9 +67,9 @@
 					 * http://movableapp.com/2012/07/cakepower-notification-system/ 
 					 */
 					echo $this->Html->tag(array(
-						'name'		=> 'div',
-						'content'	=> $this->Session->flash(),
-						'style'		=> 'margin-top:22px'
+						'tag'		=> 'div',
+						'style'		=> 'margin-top:22px',
+						$this->Session->flash()
 					));
 					
 					
@@ -79,10 +79,10 @@
 					 * View Title
 					 */
 					echo $this->Html->tag(array(
-						'class'		=> 'page-header',
-						'content'	=> array(
-							'name' 		=> 'h4',
-							'content'	=> $this->fetch( 'title_for_view' )
+						'class' => 'page-header',
+						array(
+							'tag' => 'h4',
+							$this->fetch('title_for_view')
 						)
 					));
 					

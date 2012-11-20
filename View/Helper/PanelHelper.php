@@ -99,12 +99,12 @@ class PanelHelper extends AppHelper {
 		$settings = PowerSet::def( $settings,array(
 			'className' => '',
 			'title'		=> '',
-			'content'	=> ''
+			'text'		=> ''
 		),'className');
 		
 		// fill settings from raw properties
 		if ( !empty($title) ) 	$settings['title'] 		= $title;
-		if ( !empty($content) ) $settings['content'] 	= $content;
+		if ( !empty($content) ) $settings['text'] 		= $content;
 		
 		// define and import custom object
 		$className = !empty($settings['className']) ? $settings['className'] : 'CakePanel.Vendor/PanelContainerUi';

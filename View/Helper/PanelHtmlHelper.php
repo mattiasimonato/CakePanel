@@ -47,7 +47,7 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 		switch ($mode) {
 			case 'tag':
 				return $this->Panel->container(PowerSet::extend($options,array(
-					'content' => $text
+					'text' => $text
 				)));
 		}
 	}

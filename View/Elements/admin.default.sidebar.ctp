@@ -62,8 +62,8 @@ foreach ( PowerMenu::getTree('admin.sidebar') as $item ) {
 	$title.= $item[PowerMenu::$displayModel]['show']; 
 	
 	$block.= $this->Html->tag(array(
-		'name' 			=> 'h5',
-		'content' 		=> $title,
+		'tag' 			=> 'h5',
+		'text' 			=> $title,
 		'class'			=> !$item[PowerMenu::$displayModel]['active'] ? 'collapsed' : '',
 		'data-toggle' 	=> 'collapse',
 		'data-target' 	=> '#'.$blockDomId
@@ -125,8 +125,8 @@ foreach ( PowerMenu::getTree('admin.sidebar') as $item ) {
 			
 			// create the action link
 			echo $this->Html->tag(array(
-				'name' 		=> 'li',
-				'content' 	=> $this->Html->link( $child[PowerMenu::$displayModel]['show'], $child[PowerMenu::$displayModel]['url'] ),
+				'tag' 		=> 'li',
+				'text' 		=> $this->Html->link( $child[PowerMenu::$displayModel]['show'], $child[PowerMenu::$displayModel]['url'] ),
 				'class' 	=> ( $itemIsActive ) ? 'active' : ''
 			));
 			

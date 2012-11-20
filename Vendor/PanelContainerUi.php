@@ -11,16 +11,16 @@ class PanelContainerUI extends PanelHtmlHelper {
 			'class' 	=> 'box-head',
 			'classes' 	=> '',
 			'style'		=> '',
-			'content' 	=> array()
+			'text' 		=> array()
 		),
 		'body' => array(
 			'class' 	=> 'box-body',
 			'classes' 	=> '',
 			'style'		=> '',
-			'content' 	=> array()
+			'text' 		=> array()
 		),
 		'titleWrapper' 	=> array(
-			'name'		=> 'h3'
+			'tag'		=> 'h3'
 		),
 		'bodyWrapper' 	=> array(
 			'class' 	=> 'wrap'
@@ -53,6 +53,7 @@ class PanelContainerUI extends PanelHtmlHelper {
 		
 		$this->settings = $this->parseSettings($settings);
 		
+		
 		parent::__construct( $View, $this->settings['helperConfig'] );
 		unset($this->settings['helperConfig']);
 		
@@ -61,7 +62,7 @@ class PanelContainerUI extends PanelHtmlHelper {
 	public function render() {
 		
 		$settings = PowerSet::extend($this->settings,array(
-			'content' => array(
+			'text' => array(
 				$this->renderHead(),
 				$this->renderBody()
 			)
@@ -118,9 +119,9 @@ class PanelContainerUI extends PanelHtmlHelper {
 		
 		// apply wrapper
 		if ( isset($this->settings['titleWrapper']) ) {
-			$wrapper = $this->tagOptions($this->settings['titleWrapper'], array('content'=>array()));
-			$wrapper['content'] 	= $settings['content'];
-			$settings['content'] 	= $wrapper;
+			$wrapper = $this->tagOptions($this->settings['titleWrapper'], array('text'=>array()));
+			$wrapper['text'] 	= $settings['text'];
+			$settings['text'] 	= $wrapper;
 		}
 		
 		// apply collapsible settings
@@ -153,9 +154,9 @@ class PanelContainerUI extends PanelHtmlHelper {
 		
 		// apply wrapper
 		if ( isset($this->settings['bodyWrapper']) ) {
-			$wrapper = $this->tagOptions($this->settings['bodyWrapper'], array('content'=>array()));
-			$wrapper['content'] 	= $settings['content'];
-			$settings['content'] 	= $wrapper;
+			$wrapper = $this->tagOptions($this->settings['bodyWrapper'], array('text'=>array()));
+			$wrapper['text'] 	= $settings['text'];
+			$settings['text'] 	= $wrapper;
 		}
 		
 		// apply collapsible settings
@@ -199,10 +200,11 @@ class PanelContainerUI extends PanelHtmlHelper {
 	protected function parseSettings( $settings = array() ) {
 		
 		$settings = PowerSet::def($settings,array(
-			'title' 		=> array(),
+			'title' 	=> array(),
 			'body'		=> array(),
-			'content' 	=> array()
-		),'content');
+			'text' 		=> array()
+		),'text');
+		
 		
 		$settings = $this->parseHeadSettings($settings);
 		$settings = $this->parseBodySettings($settings);
@@ -218,9 +220,9 @@ class PanelContainerUI extends PanelHtmlHelper {
 	
 	protected function parseHeadSettings($settings = array()) {
 		
-		if ( is_array($settings['title']) ) $settings['title'] = array( 'content'=>$settings['title'] );
+		if ( is_array($settings['title']) ) $settings['title'] = array( 'text'=>$settings['title'] );
 		
-		$settings['title'] = PowerSet::def($settings['title'], array('content'=>''), 'content');
+		$settings['title'] = PowerSet::def($settings['title'], array('text'=>''), 'text');
 		
 		return $settings;
 	}
@@ -228,10 +230,10 @@ class PanelContainerUI extends PanelHtmlHelper {
 	protected function parseBodySettings($settings = array()) {
 		
 		$settings['body'] = $this->tagOptions($settings['body'], array(
-			'content' => $settings['content']
+			'text' => $settings['text']
 		));
 		
-		unset($settings['content']);
+		unset($settings['text']);
 		
 		return $settings;
 	}

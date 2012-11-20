@@ -88,7 +88,7 @@ class PanelFormHelper extends PowerFormHelper {
 				
 			}
 			
-			$_input['content'] = $this->input($field, $settings);
+			$_input['text'] = $this->input($field, $settings);
 			
 			$_inputs[] = $_input;
 		
@@ -96,7 +96,7 @@ class PanelFormHelper extends PowerFormHelper {
 		
 		return $this->Html->tag(array(
 			'class' 	=> 'row-fluid',
-			'content' 	=> $_inputs
+			$_inputs
 		));
 	
 	}
@@ -242,9 +242,9 @@ class PanelFormHelper extends PowerFormHelper {
 			foreach ( $values as $key=>$val ) {
 				
 				$items.= $this->Html->tag(array(
-					'name'	=> 'label',
+					'tag'	=> 'label',
 					'class' => 'checkbox' . ( $options['inline'] === true ? ' inline' : '' ),
-					'content' => array(
+					'text' 	=> array(
 						parent::checkbox( $fieldName, array(
 							'value'			=> $key,
 							'hiddenField'	=> empty($items) && $options['hiddenField']!==false

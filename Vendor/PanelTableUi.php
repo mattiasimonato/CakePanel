@@ -165,7 +165,7 @@ class PanelTableUI extends PanelHtmlHelper {
 		$settings = $this->settings['thead'];
 		unset($settings['th']);
 		
-		return $this->tag('thead', array('name'=>'tr', 'content'=>$content), $settings);
+		return $this->tag('thead', array('tag'=>'tr', 'text'=>$content), $settings);
 		
 	}
 	
@@ -198,19 +198,19 @@ class PanelTableUI extends PanelHtmlHelper {
 		unset($settings['items']);
 		
 		// translate to a single array tag configuration
-		$settings['name'] 		= $tagName;
-		$settings['content'] 	= $label;
+		$settings['tag'] 	= $tagName;
+		$settings['text'] 	= $label;
 		
 		// in-class callback
 		if ( method_exists($this,$callback) ) {
-			$r = call_user_method( $callback, $this, $settings['content'], $settings, $this );
-			if ( is_array($r) ) $settings = $r; else $settings['content'] = $r;
+			$r = call_user_method( $callback, $this, $settings['text'], $settings, $this );
+			if ( is_array($r) ) $settings = $r; else $settings['text'] = $r;
 		}
 		
 		// closure callback
 		if ( isset($this->settings[$callback]) && is_callable($this->settings[$callback]) ) {
-			$r = $this->settings[$callback]( $settings['content'], $settings, $this);
-			if ( is_array($r) ) $settings = $r; else $settings['content'] = $r;	
+			$r = $this->settings[$callback]( $settings['text'], $settings, $this);
+			if ( is_array($r) ) $settings = $r; else $settings['text'] = $r;	
 		}
 		
 		return $this->tag( $settings );
@@ -255,8 +255,8 @@ class PanelTableUI extends PanelHtmlHelper {
 		}
 		
 		$settings = array(
-			'name' => 'tr',
-			'content' => $content
+			'tag' => 'tr',
+			'text' => $content
 		);
 		
 		$callback = 'tbodyRow';
@@ -322,19 +322,19 @@ class PanelTableUI extends PanelHtmlHelper {
 		}
 		
 		// translate to a single array tag configuration
-		$settings['name'] 		= $tagName;
-		$settings['content'] 	= $content;
+		$settings['tag'] 	= $tagName;
+		$settings['text'] 	= $content;
 		
 		// in-class callback
 		if ( method_exists($this,$callback) ) {
-			$r = call_user_method( $callback, $this, $settings['content'], $settings, $this );
-			if ( is_array($r) ) $settings = $r; else $settings['content'] = $r;
+			$r = call_user_method( $callback, $this, $settings['text'], $settings, $this );
+			if ( is_array($r) ) $settings = $r; else $settings['text'] = $r;
 		}
 		
 		// closure callback
-		if ( isset($this->settings[$callback]) && is_callable($this->settings[$callback]) ) {
-			$r = $this->settings[$callback]( $settings['content'], $settings, $this );
-			if ( is_array($r) ) $settings = $r; else $settings['content'] = $r;	
+		if ( isset($this->settings[$callback]) && is_callable($this->text[$callback]) ) {
+			$r = $this->settings[$callback]( $settings['text'], $settings, $this );
+			if ( is_array($r) ) $settings = $r; else $settings['text'] = $r;	
 		}
 		
 		return $this->tag( $settings );
@@ -350,8 +350,8 @@ class PanelTableUI extends PanelHtmlHelper {
 		}
 		
 		$config = array(
-			'content' => $items,
-			'class' 	=> 'btn-group'
+			'text' 	=> $items,
+			'class' => 'btn-group'
 		);
 		
 		return $this->tag($config);
