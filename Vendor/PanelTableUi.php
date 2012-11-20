@@ -541,7 +541,7 @@ class PanelTableUI extends PanelHtmlHelper {
 		
 		if ( empty($settings['table']) ) return $settings;
 		
-		$settings['table'] = $this->tagOptions($settings['table']);
+		$settings['table'] = $this->tagOptions($settings['table'],$this->_settings['table']);
 		
 		return $settings;
 		
@@ -559,7 +559,7 @@ class PanelTableUI extends PanelHtmlHelper {
 		
 		if ( empty($settings['thead']) ) return $settings;
 		
-		$settings['thead'] = $this->tagOptions($settings['thead']);
+		$settings['thead'] = $this->tagOptions($settings['thead'],$this->_settings['thead']);
 		
 		if ( !empty($settings['thead']['tr']) ) $settings['thead']['tr'] = $this->tagOptions($settings['thead']['tr']);
 		if ( !empty($settings['thead']['th']) ) $settings['thead']['th'] = $this->tagOptions($settings['thead']['th']); 
@@ -571,6 +571,8 @@ class PanelTableUI extends PanelHtmlHelper {
 	protected function parseTbodySettings( $settings = array() ) {
 		
 		if ( empty($settings['tbody']) ) return $settings;
+		
+		$settings['tbody'] = $this->tagOptions($settings['tbody'],$this->_settings['tbody']);
 		
 		return $settings;
 	

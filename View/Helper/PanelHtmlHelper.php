@@ -36,82 +36,31 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 	}
 	
 	
-	/**
-	 * accepts nested snippets by implementing it's name:
-	 * 
-	 * array(
-	 *   'name' => 'container',
-	 *   'title' => 'users',
-	 *   'content' => array(
-	 *     'name' => 'table',
-	 *     'data' => $users
-	 *   )
-	 * )
-	 * 
-	 * 
-	 */
-	/*
-	public function tag($name='div', $text = null, $options = array()) {
-		
-		// call with multiple params does not accept nested widgets
-		if ( !is_array($name) || PowerSet::is_vector($name) ) return parent::tag($name,$text,$options);
-		
-		// -- XTYPE --
-		$xtype = null;
-		if ( isset($name['xtype']) ) {
-			$xtype = $name['xtype'];
-			unset($name['xtype']);
-		}
-		
-		switch( $xtype ) {
-			
-			case 'container':
-				return $this->Panel->container($name);
-				
-			case 'table':
-				return $this->Panel->table($name);
-			
-			// apply parents xtypes:
-			default:
-				$name['xtype'] = $xtype;
-				return parent::tag($name,$text,$options);
-				break;
-		
-		}
-		// -- XTYPE --
-		
-	}
-	*/
 	
-	protected function xtypeOptions($xtype, $name, $text, $options) {
-		
-		// apply parent configuration
-		list ($name, $text, $options) = parent::xtypeOptions($xtype, $name, $text, $options);
-		
-		switch ($xtype) {
-			case 'table':
-				$options['allowEmpty'] = true;
-				$text = '-';
-				break;
-		}
-		
-		return array($name, $text, $options);
-		
-	}
 	
-	protected function xtypeTag($xtype, $name, $text, $options) {
-		
-		switch ($xtype) {
-			case 'container':
+	
+// --------------------------- //	
+// ---[[   X T Y P E S   ]]--- //
+// --------------------------- //	
+	
+	public function xtypeContainer($mode, $name, $text, $options) {
+		switch ($mode) {
+			case 'tag':
 				return $this->Panel->container(PowerSet::extend($options,array(
 					'content' => $text
 				)));
-			case 'table':
+		}
+	}
+	
+	public function xtypeTable($mode, $name, $text, $options) {
+		switch ($mode) {
+			case 'options':
+				$options['allowEmpty'] = true;
+				return array($name, $text, $options);
+				
+			case 'tag':
 				return $this->Panel->table($options);
 		}
-		
-		return parent::xtypeTag($xtype, $name, $text, $options);
-		
 	}
 	
 }
