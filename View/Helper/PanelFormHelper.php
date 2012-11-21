@@ -292,7 +292,13 @@ class PanelFormHelper extends PowerFormHelper {
 		
 	}
 	
-
+	public function end($options=null) {
+		$options = PowerSet::def($options, array(
+			'label' => null,
+			'div' => 'form-actions'
+		), 'label');
+		return parent::end($options);
+	}
 	
 	
 
