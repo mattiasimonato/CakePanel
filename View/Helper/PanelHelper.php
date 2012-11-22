@@ -62,7 +62,7 @@ class PanelHelper extends AppHelper {
 		$settings+= array( 'className'=>'' );
 		
 		// define and import custom object
-		$className = !empty($settings['className']) ? $settings['className'] : 'CakePanel.Vendor/PanelTableUI';
+		$className = !empty($settings['className']) ? $settings['className'] : 'CakePanel.Vendor/PanelTableUi';
 		list( $className, $package,  ) = packageCmp($className);
 		App::uses( $className, $package );
 		unset($settings['className']);

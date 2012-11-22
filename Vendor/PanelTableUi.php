@@ -6,7 +6,7 @@
  * @author peg
  *
  */
-class PanelTableUI extends PanelHtmlHelper {
+class PanelTableUi extends PanelHtmlHelper {
 	
 	
 	private $_settings = array(
