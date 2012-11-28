@@ -57,25 +57,9 @@ class CakePanelController extends CakePowerController {
  */
 	public function __construct($request = null, $response = null) {
 		
-		// Loads extended core classes setting an alias to use them with the normal app names.
-		foreach( array('components','helpers') as $type ) {
-			
-			foreach ( $this->__cakePanel[$type] as $key=>$val ) {
-			
-				if ( is_numeric($key) ) {
-					$cmp 	= $val;
-					$load 	= true;
-				} else {
-					$cmp 	= $key;
-					$load 	= $val;
-				}
-			
-				if ( empty($this->{$type}[$cmp]) && $load === true ) $this->{$type}[$cmp] = array();
-				if ( isset($this->{$type}[$cmp]) && empty($this->{$type}[$cmp]['className']) ) $this->{$type}[$cmp]['className'] = 'CakePanel.Panel'.$cmp;
-			
-			}
-			
-		}
+		// Alias CakePanel libraries
+		$this->aliasLibs('components', $this->__cakePanel['components'], 'CakePanel.Panel');
+		$this->aliasLibs('helpers', $this->__cakePanel['helpers'], 'CakePanel.Panel');
 		
 		// Add CakePanel helpers
 		$this->addHelper( 'CakePanel.Panel' );
