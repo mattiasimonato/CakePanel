@@ -52,17 +52,6 @@ class PanelHtmlHelper extends PowerHtmlHelper {
 		}
 	}
 	
-	public function xtypeTable($mode, $name, $text, $options) {
-		switch ($mode) {
-			case 'options':
-				$options['allowEmpty'] = true;
-				return array($name, $text, $options);
-				
-			case 'tag':
-				return $this->Panel->table($options);
-		}
-	}
-	
 }
 
 

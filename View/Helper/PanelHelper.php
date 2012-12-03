@@ -19,59 +19,6 @@ class PanelHelper extends AppHelper {
 	}
 	
 	
-/**	
- * Utility method to render a TableUI object with standard or custom (extended) object
- * 
- *     // view code - custom tableUI object
- *     class myTable extends PanelTableUI { ... }
- *     echo $this->Panel->table( $list, 'myTable' );
- *     
- *     // view core - generic tableUI with configurations
- *     echo $this->Panel->table( $list, array(
- * 	     'modelName' => 'Foo'
- *     ));
- * 
- * This method should auto load tableUI class if not present.
- * By default $tableUI is searched inside "Vendor" package but you should customize loading
- * search path as follow:
- * 
- *     echo $this->Panel->table( $list, 'Plugin.Vendor/customTableObject' );
- *     echo $this->Panel->table( $list, 'Plugin.Vendor/subpackage/customTableObject' );
- * 
- * this kind of $tableUI name will causes: 
- * 
- *     App::uses( 'customTableObject', 'Plugin.Vendor' );
- *     App::uses( 'customTableObject', 'Plugin.Vendor/subpackage' );
- *     
- * this approach allow to store 
- * 
- */
-	public function table( $data, $settings = array() ) {
-		
-		if ( isset($data['data']) ) {
-			$settings = $data;
-			$data = $settings['data'];
-			unset($settings['data']);
-		}
-		
-		// string settings means custom object
-		if ( is_string($settings) ) $settings = array( 'className'=>$settings );
-		
-		// apply defaults to settings
-		if ( !is_array($settings) || empty($settings) ) $options = array();
-		$settings+= array( 'className'=>'' );
-		
-		// define and import custom object
-		$className = !empty($settings['className']) ? $settings['className'] : 'CakePanel.Vendor/PanelTableUi';
-		list( $className, $package,  ) = packageCmp($className);
-		App::uses( $className, $package );
-		unset($settings['className']);
-		
-		// creates table object instance
-		$obj = new $className( $this->_View, $settings );
-		return $obj->render($data);
-		
-	}
 	
 	
 /**
